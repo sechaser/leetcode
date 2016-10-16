@@ -1,10 +1,13 @@
 #include <iostream>
-
-using namespace std;
+#include <string>
+#include <sstream>
+#include <vector>
+#include <algorithm>
 
 int main()
 {
-    cout << "Hello World!" << endl;
+
+    system("pause");
     return 0;
 }
 
