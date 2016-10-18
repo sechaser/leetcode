@@ -13,64 +13,63 @@ struct ListNode
 };
 
 
+ListNode* swapPairs(ListNode* head)
+{
+    if(head == NULL)
+        return NULL;
+
+    ListNode* node = new ListNode(0);
+    node->next = head;
+    ListNode* pre = node;
+    ListNode* cur = head;
+
+    while(cur != NULL && cur->next != NULL)
+    {
+        ListNode* next = cur->next->next;
+        cur->next->next = cur;
+        pre->next = cur->next;
+
+        if(next != NULL && next->next != NULL)
+            cur->next = next->next;
+        else
+            cur->next = next;
+
+        pre = cur;
+        cur = next;
+    }
+
+    return node->next;
+}
+
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
+    ListNode* list1, *node, *p;
+
     for(int i = 0; i != 5; ++ i)
     {
         node = (ListNode*)malloc(sizeof(ListNode));
+        node->next = NULL;
         node->val  = i;
-        node->next = NULL;
 
         if(i == 0)
         {
-            lis1 = node;
-            p    = node;
+            list1 = node;
+            p     = node;
         }
         else
         {
             p->next = node;
-            p       = node;
+            p       = p->next;
         }
     }
 
-
-    for(int i = 0; i != 5; ++ i)
+    ListNode* newList = swapPairs(list1);
+    while(newList != NULL)
     {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
+        std::cout<<std::setw(4)<<newList->val;
+        newList = newList->next;
     }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::cout<<std::endl;
 
     system("pause");
     return 0;
