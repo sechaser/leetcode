@@ -4,73 +4,32 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <iterator>
 
-struct ListNode
+int removeElement(std::vector<int>& nums, int val)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(nums.size() == 0)
+        return 0;
 
+    std::sort(nums.begin(), nums.end());
+    std::vector<int>::iterator it = nums.begin();
+
+    while(it != nums.end())
+    {
+        if(*it == val)
+            it = nums.erase(it);
+        else
+            ++ it;
+    }
+    return nums.size();
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    std::vector<int> nums{2, 2,1, 3, 54, 5};
+    int res = removeElement(nums, 10);
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::cout<<res<<std::endl;
 
     system("pause");
     return 0;
