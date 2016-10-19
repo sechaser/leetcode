@@ -5,72 +5,82 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
-{
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+//Time limit exceed
+//int divide(int dividend, int divisor)
+//{
+//    if(divisor == 0 || dividend == 0)
+//        return 0;
+//    else if(dividend == INT_MIN && divisor == (-1))
+//        return INT_MAX;
+//    else
+//    {
+//        int res = 0;
+//        bool flag = 0;
+//        bool both = 0;
 
+//        if(dividend < 0 && divisor > 0)
+//        {
+//            dividend = (-dividend);
+//            flag     = 1;
+//        }
+//        else if(dividend > 0 && divisor < 0)
+//        {
+//            divisor = (-divisor);
+//            flag    = 1;
+//        }
+//        else if(dividend < 0 && divisor < 0)
+//        {
+//            both = 1;
+//            dividend = (-dividend);
+//            divisor  = (-divisor);
+//        }
+
+//        while(dividend >= divisor)
+//        {
+//            dividend = dividend - divisor;
+//            ++ res;
+//        }
+
+//        if(flag)
+//            return -res;
+//        else
+//            return res;
+//    }
+//}
+
+
+int divide(int diviend, int divisor)
+{
+    unsigned int divd = diviend, divs = divisor;
+    if(diviend < 0)
+        divd = (-divd);
+    if(divisor < 0)
+        divs = (-divs);
+
+    unsigned int res = 0;
+    while(divd >= divs)
+    {
+        unsigned int a = divs;
+        int i;
+
+        for(i = 1; a <= divd; ++ i)
+            a = (a << 1);
+
+        res  = res + (1 << (i - 2));
+        divd = divd - (divs << (i - 2));
+    }
+
+    return (diviend > 0 ^ divisor > 0) ? (-res):(res >= INT_MAX ? INT_MAX : res);
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    int diviend = -2147483548, divisor = -1;
+    int res = divide(diviend, divisor);
+    std::cout<<res<<std::endl;
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    unsigned int a = -1;
+    std::cout<<a<<std::endl;
 
     system("pause");
     return 0;
