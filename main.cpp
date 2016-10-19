@@ -60,7 +60,7 @@ int divide(int diviend, int divisor)
     unsigned int res = 0;
     while(divd >= divs)
     {
-        unsigned int a = divs;
+        long long a = divs;
         int i;
 
         for(i = 1; a <= divd; ++ i)
@@ -78,9 +78,6 @@ int main()
     int diviend = -2147483548, divisor = -1;
     int res = divide(diviend, divisor);
     std::cout<<res<<std::endl;
-
-    unsigned int a = -1;
-    std::cout<<a<<std::endl;
 
     system("pause");
     return 0;
