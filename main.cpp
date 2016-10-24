@@ -5,72 +5,67 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+std::vector<int> searchRange(std::vector<int>& nums, int target)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(nums.empty())
+        return std::vector<int>{-1,-1};
+    else
+    {
+        size_t sz = nums.size();
+        size_t l = 0, r = sz - 1;
+        size_t m = l + (r - l)/2;
+        std::vector<int> res;
+
+        while(l <= r)
+        {
+            if(nums[m] < target)
+            {
+                l = m + 1;
+                m = l + (r - l)/2;
+            }
+            else if(nums[m] > target)
+            {
+                if(m == 0)
+                    return std::vector<int>{-1,-1};
+                r = m - 1;
+                m = l + (r - l)/2;
+            }
+            else
+            {
+                int i = m;
+                while(i != sz && nums[i] == target)
+                    ++ i;
+                res.push_back(i-1);
+
+                i = m;
+                while(i >= 0 && nums[i] == target)
+                    -- i;
+                res.push_back(i+1);
+
+                break;
+            }
+        }
+
+        if(res.size() > 1)
+            std::sort(res.begin(), res.end());
+        else if(res.size() == 1)
+            res.push_back(res[0]);
+        else
+            res = std::vector<int>{-1,-1};
+
+        return res;
+    }
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    std::vector<int> nums{1,3,5};
+    int target = 3;
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> res = searchRange(nums, target);
+    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
+        std::cout<<res[i]<<std::endl;
 
     system("pause");
     return 0;
