@@ -5,73 +5,44 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
-{
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+#include <string.h>
 
+#define jiuGongGe 9
+
+bool checkValid(bool vec[], int val)
+{
+    if(vec[val] == 1)
+        return false;
+    vec[val] = 1;
+    return true;
+}
+
+bool isValidSudoku(std::vector<std::vector<char> >& board)
+{
+    bool rowValid[jiuGongGe+1] = {0};
+    bool columnValid[jiuGongGe][jiuGongGe+1] = {0};
+    bool subBoardValid[jiuGongGe][jiuGongGe+1] = {0};
+
+    for(int i = 0; i != jiuGongGe; ++ i)
+    {
+        memset(rowValid, 0, sizeof(rowValid));
+        for(int j = 0; j != jiuGongGe; ++ j)
+        {
+            if(board[i][j] != '.')
+            {
+                if(!checkValid(rowValid, board[i][j]-'0') ||
+                   !checkValid(columnValid[j], board[i][j]-'0') ||
+                   !checkValid(subBoardValid[i/3*3+j/3], board[i][j]-'0'))
+                    return false;
+            }
+        }
+    }
+
+    return true;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
     system("pause");
     return 0;
 }
