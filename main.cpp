@@ -5,72 +5,42 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
-{
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
 
+int searchInsert(std::vector<int>& nums, int target)
+{
+    if(nums.empty())
+        return 0;
+    else
+    {
+        size_t nums_sz = nums.size();
+        int l = 0, r = nums_sz - 1, m = l + (r - l)/2;
+
+        while(l <= r)
+        {
+            if(nums[m] == target)
+                return m;
+            else if(nums[m] < target)
+            {
+                l = m + 1;
+                m = l + (r - l)/2;
+            }
+            else
+            {
+                r = m - 1;
+                m = l + (r - l)/2;
+            }
+        }
+
+        return l;
+    }
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> nums{1,3,5,6};
+    int target = 0;
+    int res = searchInsert(nums, target);
+    std::cout<<res<<std::endl;
 
     system("pause");
     return 0;
