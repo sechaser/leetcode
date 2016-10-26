@@ -5,72 +5,51 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+void mysolver(std::vector<int>& candiates, int beg, int target, std::vector<int>& tmp, std::vector<std::vector<int> >& res)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(target == 0)
+    {
+        res.push_back(tmp);
+        return;
+    }
 
+    for(int i = beg; i != candiates.size() && candiates[i] <= target; ++ i)
+    {
+        if(i == 0 || candiates[i] != candiates[i-1])
+        {
+            tmp.push_back(candiates[i]);
+            mysolver(candiates, i, target - candiates[i], tmp, res);
+            tmp.pop_back();
+        }
+    }
+}
+
+std::vector<std::vector<int> > combinationSum(std::vector<int>& candidates, int target)
+{
+    std::vector<std::vector<int> > res;
+    if(candidates.empty())
+        return res;
+
+    std::sort(candidates.begin(), candidates.end());
+    std::vector<int> tmp;
+    mysolver(candidates, 0, target, tmp, res);
+
+    return res;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
+    std::vector<int> candiates{8, 7, 4, 3};
+    int target = 11;
+
+    std::vector<std::vector<int> > res = combinationSum(candiates, target);
+
+    for(std::vector<std::vector<int> >::size_type i = 0; i != res.size(); ++ i)
     {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
+        for(std::vector<int>::size_type j = 0; j != res[i].size(); ++ j)
+            std::cout<<std::setw(4)<<res[i][j];
+        std::cout<<std::endl;
     }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
 
     system("pause");
     return 0;
