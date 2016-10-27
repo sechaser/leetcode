@@ -5,72 +5,47 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+int firstMissiongPositive(std::vector<int>& nums)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(nums.empty())
+        return 1;
 
+    std::sort(nums.begin(), nums.end());
+    size_t i = 0;
+
+    while(i != nums.size())
+    {
+        if(nums[i] < 0)
+            ++ i;
+        else
+            break;
+    }
+
+    if(nums[i] <= 1)
+    {
+        size_t j = i + 1;
+        while(j != nums.size())
+        {
+            if((nums[j] == nums[j-1] + 1 ) || (nums[j] == nums[j - 1]))
+            {
+                ++ j;
+                continue;
+            }
+            else
+                break;
+        }
+
+        return nums[j-1]+1;
+    }
+    else
+        return 1;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> nums = {1};
+    int res = firstMissiongPositive(nums);
+    std::cout<<res<<std::endl;
 
     system("pause");
     return 0;
