@@ -4,73 +4,46 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <regex>
 
-struct ListNode
+bool isMatch(std::string s, std::string p)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    int is = 0, ip = 0, istar = -1, starmatch;
+    int s_sz = s.size(), p_sz = p.size();
 
+    while(is != s_sz)
+    {
+        if(ip != p_sz && (s[is] == p[ip] || p[ip] == '?'))
+        {
+            ++ is;
+            ++ ip;
+        }
+        else if(ip != p_sz && p[ip] == '*')
+        {
+            istar = ip;
+            ++ ip;
+            starmatch = is;
+        }
+        else if(istar != (-1))
+        {
+            ip = istar + 1;
+            ++ starmatch;
+            is = starmatch;
+        }
+        else
+            return false;
+    }
+
+    while(ip != p_sz && p[ip] == '*')
+        ++ ip;
+
+    return ip == p_sz;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::string s = "", p = "";
+    std::cout<<isMatch(s, p)<<std::endl;
 
     system("pause");
     return 0;
