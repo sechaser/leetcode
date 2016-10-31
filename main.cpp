@@ -5,73 +5,69 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+void swap(std::vector<int>& nums, int i, int j)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+
+
+bool canSwap(std::vector<int>& nums, int i, int j)
+{
+    for(int k = i; k != j; ++ k)
+    {
+        if(nums[k] == nums[j])
+            return false;
+    }
+
+    return true;
+}
+
+
+void allRange(std::vector<int>& nums, std::vector<std::vector<int> >& res, int beg, int end)
+{
+    if(beg == end)
+        res.push_back(nums);
+    else
+    {
+        for(int i = beg; i != end; ++ i)
+        {
+            if(canSwap(nums, beg, i))
+            {
+                swap(nums, beg, i);
+                allRange(nums, res, beg+1, end);
+                swap(nums, beg, i);
+            }
+        }
+    }
+}
+
+
+std::vector<std::vector<int> > permute(std::vector<int>& nums)
+{
+    std::vector<std::vector<int> > res;
+    if(nums.empty())
+        return res;
+
+    size_t nums_sz = nums.size();
+    allRange(nums, res, 0, nums_sz);
+
+    return res;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
+    std::vector<int> nums{1,2,2};
+    std::vector<std::vector<int> > res = permute(nums);
+
+    for(std::vector<std::vector<int> >::size_type i = 0; i != res.size(); ++ i)
     {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
+        for(std::vector<int>::size_type j = 0; j != res[i].size(); ++ j)
+            std::cout<<std::setw(4)<<res[i][j];
+        std::cout<<std::endl;
     }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
     system("pause");
     return 0;
 }
