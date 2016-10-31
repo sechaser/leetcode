@@ -5,72 +5,41 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+
+
+int jump(std::vector<int>& nums)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(nums.empty())
+        return 0;
+
+    size_t nums_sz = nums.size();
+    int step = 0, prevStepDis = 0, currStepDis = 0;
+    for(int i = 0; i != nums_sz; ++ i)
+    {
+        //If the current index exceed the farest distance with only "step", we should add a step and go far.
+        if(i > prevStepDis)
+        {
+            prevStepDis = currStepDis;
+            ++ step;
+        }
+
+        //Record the farest distance we can reach with "step+1".
+        currStepDis = std::max(currStepDis, i + nums[i]);
+    }
+
+    if(currStepDis < nums_sz - 1)
+        return 0;
+
+    return step;
+}
+
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> nums{2,3,1,1,4};
+    int res = jump(nums);
+    std::cout<<res<<std::endl;
 
     system("pause");
     return 0;
