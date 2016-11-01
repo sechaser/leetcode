@@ -4,73 +4,43 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <math.h>
 
-struct ListNode
-{
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+//Method 1
+//double myPow(double x, int n)
+//{
+//    return std::pow(x, n);
+//}
+
+
+//Method 2
+//double helper(double x, int n)
+//{
+//    if(n == 0)
+//        return 1;
+
+//    double res = helper(x, n/2);
+//    res *= res;
+//    if(n%2)
+//        res *= x;
+
+//    return res;
+//}
+
+//double myPow(double x, int n)
+//{
+//    if(n >= 0)
+//        return helper(x, n);
+//    else
+//        return 1.0/helper(x, -n);
+//}
+
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    long double res = myPow(1.2, 2);
+    std::cout<<res<<std::endl;
 
     system("pause");
     return 0;
