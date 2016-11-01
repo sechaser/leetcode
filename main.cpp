@@ -5,72 +5,271 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+#include <math.h>
+
+//******************************************Method 1*******************************************
+//bool isValid(std::vector<std::string>& curr, int row, int col)
+//{
+//    //Check if every column is OK
+//    for(int i = 0; i != row; ++ i)
+//    {
+//        if(curr[i][col] == 'Q')
+//            return false;
+//    }
+
+//    //left diagonal line
+//    for(int i = row-1, j = col - 1; i >= 0 && j >= 0; -- i, -- j)
+//    {
+//        if(curr[i][j] == 'Q')
+//            return false;
+//    }
+
+//    //right diagonal line
+//    for(int i = row - 1, j = col + 1; i >= 0 && j < curr.size(); -- i, ++ j)
+//    {
+//        if(curr[i][j] == 'Q')
+//            return false;
+//    }
+
+//    return true;
+//}
+
+//void solver(std::vector<std::string>& curr, std::vector<std::vector<std::string> >& res, int row)
+//{
+//    if(row == curr.size())
+//    {
+//        res.push_back(curr);
+//        return;
+//    }
+
+//    for(int col = 0; col != curr.size(); ++ col)
+//    {
+//        if(isValid(curr, row, col))
+//        {
+//            curr[row][col] = 'Q';
+//            solver(curr, res, row+1);
+//            curr[row][col] = '.';
+//        }
+//    }
+//}
+
+//std::vector<std::vector<std::string> > solveNQueens(int n)
+//{
+//    std::vector<std::vector<std::string> > res;
+//    std::vector<std::string> curr(n, std::string(n, '.'));
+
+//    solver(curr, res, 0);
+//    return res;
+//}
+
+
+
+//*****************************************Method 2******************************************
+
+//bool isValid(std::vector<int>& state, int row, int col)
+//{
+//    for(std::vector<int>::size_type i = 0; i != row; ++ i)
+//    {
+//        if(state[i] == col || std::abs(row - i) == std::abs(col - state[i]))
+//            return false;
+//    }
+
+//    return true;
+//}
+
+//void solver(std::vector<int>& state, std::vector<std::vector<std::string> >& res, int row)
+//{
+//    if(row == state.size())
+//    {
+//        std::vector<std::string> curr(state.size(), std::string(state.size(), '.'));
+//        for(std::vector<int>::size_type i = 0; i != state.size(); ++ i)
+//            curr[i][state[i]] = 'Q';
+//        res.push_back(curr);
+//        return;
+//    }
+
+//    for(int col = 0; col != state.size(); ++ col)
+//    {
+//        if(isValid(state, row, col))
+//        {
+//            state[row] = col;
+//            solver(state, res, row + 1);
+//            state[row] = (-1);
+//        }
+//    }
+//}
+
+//std::vector<std::vector<std::string> > solveNQueens(int n)
+//{
+//    std::vector<std::vector<std::string> > res;
+//    std::vector<int> state(n, -1);
+
+//    solver(state, res, 0);
+//    return res;
+//}
+
+
+//************************************************Method 3******************************************
+
+//bool isValid(std::vector<int>& state, int row,  int col)
+//{
+//    for(std::vector<int>::size_type i = 0; i != row; ++ i)
+//    {
+//        if(state[i] == col || std::abs(row - i) == std::abs(col - state[i]))
+//            return false;
+//    }
+
+//    return true;
+//}
+
+//std::vector<std::vector<std::string> > solveNQueens(int n)
+//{
+//    std::vector<int> state(n, -1);
+//    std::vector<std::vector<std::string> > res;
+
+//    for(int row = 0, col; ;)
+//    {
+//        for(col = state[row] + 1; col != n; ++ col)
+//        {
+//            if(isValid(state, row, col))
+//            {
+//                state[row] = col;
+//                if(row == n -1)
+//                {
+//                    std::vector<std::string> curr(n, std::string(n, '.'));
+//                    for(int i = 0; i != n; ++ i)
+//                        curr[i][state[i]] = 'Q';
+//                    res.push_back(curr);
+//                }
+//                else
+//                {
+//                    ++ row;
+//                    break;
+//                }
+//            }
+//        }
+
+//        if(col == n)
+//        {
+//            if(row == 0)
+//                break;
+//            state[row] = -1;
+//            -- row;
+//        }
+//    }
+
+//    return res;
+//}
+
+//std::vector<std::vector<std::string> > solveNQueens(int n)
+//{
+//    std::vector<std::vector<std::string> > res;
+//    std::vector<int> state(n, -1);
+
+//    int row = 0, col = 0;
+//    while(row != n)
+//    {
+//        while(col != n)
+//        {
+//            if(isValid(state, row, col))
+//            {
+//                state[row] = col;
+//                col = 0;
+//                break;
+//            }
+//            else
+//                ++ col;
+//        }
+
+//        if(state[row] < 0)
+//        {
+//            if(row == 0)
+//                break;
+//            else
+//            {
+//                -- row;
+//                col = state[row] + 1;
+//                state[row] = (-1);
+//                continue;
+//            }
+//        }
+
+//        if(row == n - 1)
+//        {
+//            std::vector<std::string> curr(n, std::string(n, '.'));
+//            for(std::vector<int>::size_type i = 0; i != n; ++ i)
+//                curr[i][state[i]] = 'Q';
+//            res.push_back(curr);
+
+
+//            col = state[row] + 1;
+//            state[row] = -1;
+//            continue;
+//        }
+
+//        ++ row;
+//    }
+
+//    return res;
+//}
+
+
+//*******************************************Method 4*****************************************
+int upperlim;
+
+void setQueen(std::vector<std::string>& curr, int row, int p, char val)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    int col = 0;
+    while(!(p & 1))
+    {
+        p >>= 1;
+        ++ col;
+    }
+    curr[row][col] = val;
+}
+
+void solver(int row, int ld, int rd, int index, std::vector<std::string>& curr, std::vector<std::vector<std::string> >& res)
+{
+    int pos, p;
+
+    if(row != upperlim)
+    {
+        pos = upperlim & (~(row | ld | rd));
+
+        while(pos)
+        {
+            p = pos & (~pos + 1);
+            pos = pos - p;
+            setQueen(curr, index, p, 'Q');
+            solver(row | p, (ld | p) << 1, (rd | p) >> 1, index + 1, curr, res);
+            setQueen(curr, index, p, '.');
+        }
+    }
+    else
+        res.push_back(curr);
+}
+
+std::vector<std::vector<std::string> > solveNQueens(int n)
+{
+    upperlim = (1 << n) - 1;
+    std::vector<std::vector<std::string> > res;
+    std::vector<std::string> curr(n, std::string(n, '.'));
+    solver(0, 0, 0, 0, curr, res);
+
+    return res;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
+    std::vector<std::vector<std::string> > res = solveNQueens(5);
+
+    for(std::vector<std::vector<std::string> >::size_type i = 0; i != res.size(); ++ i)
     {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
+        for(std::vector<std::string>::size_type j = 0; j != res[i].size(); ++ j)
+            std::cout<<res[i][j]<<std::endl;
+        std::cout<<std::endl;
     }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
 
     system("pause");
     return 0;
