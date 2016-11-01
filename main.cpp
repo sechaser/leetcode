@@ -5,72 +5,55 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
-{
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+//************************************Time O(n^2) Space O(n^2)***************************************
+//void rotate(std::vector<std::vector<int> >& matrix)
+//{
+//    size_t n = matrix.size();
+//    if(n == 0)
+//        return ;
 
+//    std::vector<std::vector<int> > temp(matrix);
+//    for(std::vector<std::vector<int> >::size_type i = 0; i != n; ++ i)
+//    {
+//        for(int j = 0; j != n; ++ j)
+//            matrix[i][j] = temp[n-j-1][i];
+//    }
+//}
+
+
+//Time:O(n^2), Space:O(1)
+void rotate(std::vector<std::vector<int> >& matrix)
+{
+    size_t n = matrix.size();
+    if(n == 0)
+        return;
+
+    int temp;
+    for(int i = 0; i < n; ++ i)
+    {
+        for(int j = i + 1; j < n; ++ j)
+        {
+            temp = matrix[i][j];
+            matrix[i][j] = matrix[j][i];
+            matrix[j][i] = temp;
+        }
+    }
+
+    for(int i = 0; i < n; ++ i)
+        std::reverse(matrix[i].begin(), matrix[i].end());
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
+    std::vector<std::vector<int> > matrix{{1,2,3}, {4,5,6}, {7,8,9}};
+    rotate(matrix);
+
+    for(std::vector<std::vector<int> >::size_type i = 0; i != matrix.size(); ++ i)
     {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
+        for(std::vector<int>::size_type j = 0; j != matrix[i].size(); ++ j)
+            std::cout<<matrix[i][j]<<" ";
+        std::cout<<std::endl;
     }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
 
     system("pause");
     return 0;
