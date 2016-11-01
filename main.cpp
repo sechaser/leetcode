@@ -5,72 +5,57 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+#include <math.h>
+
+
+
+
+bool isValid(std::vector<int>& state, int row, int col)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    for(std::vector<int>::size_type i = 0; i != row; ++ i)
+    {
+        if(state[i] == col || std::abs(row - i) == std::abs(col - state[i]))
+            return false;
+    }
+
+    return true;
+}
+
+void solver(std::vector<int>& state, int& res, int row)
+{
+    if(row == state.size())
+    {
+        ++ res;
+        return;
+    }
+
+    for(int col = 0; col != state.size(); ++ col)
+    {
+        if(isValid(state, row, col))
+        {
+            state[row] = col;
+            solver(state, res, row + 1);
+            state[row] = (-1);
+        }
+    }
+}
+
+int solveNQueens(int n)
+{
+    int res = 0;
+    std::vector<int> state(n, -1);
+
+    solver(state, res, 0);
+    return res;
+}
+
+
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    int res = solveNQueens(5);
+    std::cout<<res<<std::endl;
 
     system("pause");
     return 0;
