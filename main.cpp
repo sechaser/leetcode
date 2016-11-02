@@ -169,22 +169,27 @@
 //    int row = 0, col = 0;
 //    while(row != n)
 //    {
+          //对第row行的每一列进行探测
 //        while(col != n)
 //        {
+              //可以放置皇后
 //            if(isValid(state, row, col))
 //            {
-//                state[row] = col;
+//                state[row] = col;    //第row行的皇后放置在第col列
+                  //第row行放置皇后后，继续探测下一行皇后的位置，此时要把col清零，从下一行的第0列开始
 //                col = 0;
 //                break;
 //            }
 //            else
-//                ++ col;
+//                ++ col;     //如果第row行的第col列无效，继续探测下一列
 //        }
 
-//        if(state[row] < 0)
+//        if(state[row] < 0)  //第row行没有找到可以放置皇后的位置
 //        {
+              //回溯到第1行，仍然无法找到可以放置皇后的位置，说明已经找到所有的解，终止程序
 //            if(row == 0)
 //                break;
+              //回溯，修改上一行皇后的位置，继续下一次探测
 //            else
 //            {
 //                -- row;
@@ -201,7 +206,7 @@
 //                curr[i][state[i]] = 'Q';
 //            res.push_back(curr);
 
-
+             //从最后一行放置皇后列数的下一列继续探测
 //            col = state[row] + 1;
 //            state[row] = -1;
 //            continue;
@@ -251,7 +256,7 @@ void solver(int row, int ld, int rd, int index, std::vector<std::string>& curr, 
 
 std::vector<std::vector<std::string> > solveNQueens(int n)
 {
-    upperlim = (1 << n) - 1;
+    upperlim = (1 << n) - 1;                 //低n位全部置1
     std::vector<std::vector<std::string> > res;
     std::vector<std::string> curr(n, std::string(n, '.'));
     solver(0, 0, 0, 0, curr, res);
