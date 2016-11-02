@@ -4,73 +4,63 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <iterator>
 
-struct ListNode
+
+struct Interval
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
+    int start;
+    int end;
+
+    Interval() : start(0), end(0) {}
+    Interval(int s, int e) : start(s), end(e) {}
 };
 
 
+std::vector<Interval> insert(std::vector<Interval>& intervals, Interval newInterval)
+{
+    std::sort(intervals.begin(), intervals.end(), [](const Interval& lhs, const Interval& rhs){
+        return lhs.start < rhs.start;
+    });
+
+    auto it = intervals.begin();
+    while(it != intervals.end() && it->start < newInterval.start)
+        ++ it;
+    intervals.insert(it, newInterval);
+
+
+    it = intervals.begin();
+    while(it != intervals.end())
+    {
+        if(it == intervals.begin())
+        {
+            ++ it;
+            continue;
+        }
+
+        if((it-1)->end < it->start)
+            ++ it;
+        else if(((it-1)->end >= it->start) && ((it-1)->end < it->end))
+        {
+            (it-1)->end = it->end;
+            it = intervals.erase(it);
+        }
+        else
+            it = intervals.erase(it);
+    }
+
+
+    return intervals;
+}
+
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    std::vector<Interval> intervals{Interval(1,2), Interval(3,5), Interval(6,7), Interval(8,10), Interval(12,16)};
+    Interval newInterval(4,9);
+    std::vector<Interval> res = insert(intervals, newInterval);
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    for(std::vector<Interval>::size_type i = 0; i != res.size(); ++ i)
+        std::cout<<res[i].start<<" "<<res[i].end<<std::endl;
 
     system("pause");
     return 0;
