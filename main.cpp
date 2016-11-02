@@ -4,73 +4,29 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <iterator>
 
-struct ListNode
+int lengthOfLastWord(std::string s)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(s.empty())
+        return 0;
+    std::string::iterator it1 = s.end() - 1;
 
+    //The first character is not ' '.
+    while(it1 >= s.begin() && *it1 == ' ')
+        -- it1;
+
+    std::string::iterator it2 = it1;
+    while(it2 >= s.begin() && *it2 != ' ')
+        -- it2;
+
+    return (it1 - it2);
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::string s = "abd we ";
+    std::cout<<lengthOfLastWord(s)<<std::endl;
 
     system("pause");
     return 0;
