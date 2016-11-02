@@ -5,72 +5,80 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+//*****************************************Time:O(n^3)*************************************
+//int maxSubArray(std::vector<int>& nums)
+//{
+//    int res = INT_MIN;
+
+//    size_t nums_sz = nums.size();
+
+//    //Consider every element in nums vector
+//    for(std::vector<int>::size_type i = 0; i != nums_sz; ++ i)
+//    {
+//        //Consider different section of element nums[i]
+//        for(std::vector<int>::size_type j = i; j != nums_sz; ++ j)
+//        {
+//            int sum = 0;
+//            //Consider section [i, j], calculate its sum
+//            for(std::vector<int>::size_type k = i; k <= j; ++ k)
+//                sum += nums[k];
+
+//            if(sum > res)
+//                res = sum;
+//        }
+//    }
+
+//    return res;
+//}
+
+
+
+//***************************************Time:O(n^2)********************************************
+//int maxSubArray(std::vector<int>& nums)
+//{
+//    int res = INT_MIN;
+//    size_t nums_sz = nums.size();
+
+//    for(std::vector<int>::size_type i = 0; i != nums_sz; ++ i)
+//    {
+//        int sum = 0;
+//        for(std::vector<int>::size_type j = i; j != nums_sz; ++ j)
+//        {
+//            sum += nums[j];
+//            if(sum > res)
+//                res = sum;
+//        }
+//    }
+
+//    return res;
+//}
+
+//***************************************Time:O(n)***********************************************
+int maxSubArray(std::vector<int>& nums)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    int res = INT_MIN, sum = -1;
+    size_t nums_sz = nums.size();
+
+    for(int i = 0; i != nums_sz; ++ i)
+    {
+        if(sum > 0)
+            sum += nums[i];
+        else
+            sum = nums[i];
+
+        if(sum > res)
+            res = sum;
+    }
+
+    return res;
+}
+
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> nums{-2,1,-3,4,-1,2,1,-5,4};
+    std::cout<<maxSubArray(nums)<<std::endl;
 
     system("pause");
     return 0;
