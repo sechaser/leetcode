@@ -5,72 +5,40 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+std::vector<int> plusOne(std::vector<int>& digits)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    std::vector<int>::size_type sz = digits.size();
+
+    int carry = 0;
+    for(int i = sz - 1; i >= 0; -- i)
+    {
+        if(i == sz - 1)
+        {
+            carry = (digits[i] + 1) / 10;
+            digits[i] = (digits[i] + 1) % 10;
+        }
+        else
+        {
+            int tmp = carry;
+            carry = (digits[i] + carry) / 10;
+            digits[i] = (digits[i] + tmp) % 10;
+        }
+    }
+
+    if(carry)
+        digits.insert(digits.begin(), carry);
+
+    return digits;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    std::vector<int> digits{9, 8};
+    std::vector<int> res = plusOne(digits);
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
+        std::cout<<res[i]<<std::endl;
 
     system("pause");
     return 0;
