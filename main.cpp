@@ -4,73 +4,53 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <iterator>
 
-struct ListNode
+std::string simplifyPath(std::string path)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    std::vector<std::string> res;
+    std::string tmp;
 
+    path.push_back('/');
+    for(std::string::size_type i = 0; i != path.size(); ++ i)
+    {
+        if(path[i] == '/')
+        {
+            if(tmp.empty())
+                continue;
+            else if(tmp == "..")
+            {
+                if(!res.empty())
+                    res.pop_back();
+                tmp.clear();
+            }
+            else if(tmp == ".")
+                tmp.clear();
+            else
+            {
+                res.push_back(tmp);
+                tmp.clear();
+            }
+        }
+        else
+            tmp.push_back(path[i]);
+    }
+
+    std::string str;
+    for(std::vector<std::string>::size_type i = 0; i != res.size(); ++ i)
+        str = str + "/" + res[i];
+
+    if(res.empty())
+        str = "/";
+
+    return str;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::string path = "/...";
+    std::string res  = simplifyPath(path);
+    std::cout<<res<<std::endl;
 
     system("pause");
     return 0;
