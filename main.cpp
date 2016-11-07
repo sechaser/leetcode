@@ -5,70 +5,58 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+void setZeros(std::vector<std::vector<int> >& matrix)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(matrix.empty())
+        return;
 
+    int m = matrix.size(), n = matrix[0].size();
+    std::vector<std::vector<int> > dp;
+    dp.reserve(m);
+
+    for(int i = 0; i != m; ++ i)
+    {
+        std::vector<int> onerow;
+        for(int j = 0; j != n; ++ j)
+        {
+            if(matrix[i][j] == 0)
+                onerow.push_back(j);
+        }
+        dp.push_back(onerow);
+    }
+    std::cout<<"hello"<<std::endl;
+
+    for(int i = 0; i != m; ++ i)
+    {
+        if(!dp[i].empty())
+        {
+            //set row to zeros
+            for(int j = 0; j != n; ++ j)
+                matrix[i][j] = 0;
+
+            //set col to zeros
+            for(int j = 0; j != m; ++ j)
+                matrix[j][dp[i][0]] = 0;
+
+            for(int j = 1; j < dp[i].size(); ++ j)
+            {
+                for(int k = 0; k != m; ++ k)
+                    matrix[k][dp[i][j]] = 0;
+            }
+        }
+    }
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
+    std::vector<std::vector<int> > matrix{{1,0,0,1}, {2,0,1,1}, {1,1,1,1}};
+    setZeros(matrix);
+
+    for(std::vector<std::vector<int> >::size_type i = 0; i != matrix.size(); ++ i)
     {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
+        for(std::vector<int>::size_type j = 0; j != matrix[i].size(); ++ j)
+            std::cout<<std::setw(4)<<matrix[i][j];
+        std::cout<<std::endl;
     }
 
 
