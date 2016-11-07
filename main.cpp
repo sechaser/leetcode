@@ -5,71 +5,38 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+bool searchMatrix(std::vector<std::vector<int> >& matrix, int target)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(matrix.empty())
+        return false;
+
+    int row = matrix.size(), col = matrix[0].size();
+    int num = row * col;
+
+    int l = 0, r = num - 1;
+
+    int m;
+    while(l <= r)
+    {
+        m = l + (r - l)/2;
+        std::cout<<l<<" "<<m<<" "<<r<<std::endl;
+
+        if(matrix[m/col][m%col] == target)
+            return true;
+        else if(matrix[m/col][m%col] < target)
+            l = m + 1;
+        else
+            r = m - 1;
+    }
+
+    return false;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
+    std::vector<std::vector<int> > matrix{{1, 7}, {8, 10}};
+    std::cout<<searchMatrix(matrix, 90)<<std::endl;
 
 
     system("pause");
