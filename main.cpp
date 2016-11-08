@@ -4,73 +4,58 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
-
-struct ListNode
+void swap(std::vector<int>& nums, int low, int high)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    int temp   = nums[low];
+    nums[low]  = nums[high];
+    nums[high] = temp;
+}
 
+int partition(std::vector<int>& nums, int low, int high)
+{
+    int value = nums[low];
+    while(low < high)
+    {
+        while((low < high) && (nums[high] >= value))
+            -- high;
+        swap(nums, low, high);
+
+        while((low < high) && (nums[low] <= value))
+            ++ low;
+        swap(nums, low, high);
+    }
+
+    return low;
+}
+
+void quickSort(std::vector<int>& nums, int low, int high)
+{
+    if(low < high)
+    {
+        int location = partition(nums, low, high);
+        quickSort(nums, low, location - 1);
+        quickSort(nums, location + 1, high);
+    }
+}
+
+void sortColors(std::vector<int>& nums)
+{
+    if(nums.empty())
+        return;
+
+    int sz = nums.size();
+    int low = 0, high = sz - 1;
+
+    quickSort(nums, low, high);
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    std::vector<int> nums{1,0};
+    sortColors(nums);
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    for(std::vector<int>::size_type i = 0; i != nums.size(); ++ i)
+        std::cout<<std::setw(4)<<nums[i]<<std::endl;
 
     system("pause");
     return 0;
