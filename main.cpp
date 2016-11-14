@@ -13,9 +13,35 @@ struct ListNode
 };
 
 
+ListNode* deleteDuplicates(ListNode* head)
+{
+    if(head == NULL)
+        return head;
+
+    ListNode* curr = head->next;
+    ListNode* prev = head;
+
+    while(curr != NULL)
+    {
+        if(curr->val == prev->val)
+        {
+            prev->next = curr->next;
+            curr = curr->next;
+        }
+        else
+        {
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+
+    return head;
+}
+
+
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
+    ListNode* node, *p, *lis1;
     for(int i = 0; i != 5; ++ i)
     {
         node = (ListNode*)malloc(sizeof(ListNode));
@@ -34,41 +60,11 @@ int main()
         }
     }
 
-
-    for(int i = 0; i != 5; ++ i)
+    p = deleteDuplicates(lis1);
+    while(p != NULL)
     {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
+        std::cout<<p->val<<std::endl;
+        p = p->next;
     }
 
 
