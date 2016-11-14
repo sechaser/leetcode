@@ -4,73 +4,44 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <stack>
 
-struct ListNode
+int largestRectangleArea(std::vector<int>& heights)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(heights.empty())
+        return 0;
+
+
+    heights.push_back(INT_MIN);
+    int area = 0;
+
+
+    std::stack<int> stk;
+    std::vector<int>::size_type i = 0;
+    int h, w;
+
+    while(i != heights.size())
+    {
+        if(stk.empty() || heights[i] >= heights[stk.top()])
+            stk.push(i++);
+        else
+        {
+            h = heights[stk.top()];
+            stk.pop();
+
+            w = stk.empty() ? i : i - stk.top() - 1;
+            area = std::max(area, h * w);
+        }
+    }
+
+    return area;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> heights{2,1,5,6,2,3};
+    std::cout<<largestRectangleArea(heights)<<std::endl;
 
     system("pause");
     return 0;
