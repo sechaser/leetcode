@@ -4,72 +4,40 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <iterator>
 
-struct ListNode
+
+int removeDuplicates(std::vector<int>& nums)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(nums.empty())
+        return 0;
 
+    std::vector<int>::iterator it = nums.begin() + 1;
+    int count = 1;
+
+    while(it != nums.end())
+    {
+        if(*it == *(it - 1))
+        {
+            ++ count;
+            if(count > 2)
+            {
+                it = nums.erase(it);
+                continue;
+            }
+        }
+        else
+            count = 1;
+        ++ it;
+    }
+
+    return nums.size();
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
+    std::vector<int> nums{1, 1, 1, 1, 1, 2,2, 2, 2, 3};
+    std::cout<<removeDuplicates(nums)<<std::endl;
 
 
     system("pause");
