@@ -5,72 +5,68 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+bool isValid(std::string str)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(str.empty() || str.size() > 3)
+        return false;
+
+    if(str[0] == '0' && str.size() != 1)
+        return false;
+
+    if(str.size() == 3 && std::stoi(str) > 255)
+        return false;
+
+    return true;
+}
+
+void solver(std::string& s, int beg, std::vector<std::string>& tmp, std::vector<std::string>& res)
+{
+    if(tmp.size() == 4)
+    {
+        if(beg == s.size())
+        {
+            std::string str = tmp[0];
+            for(int i = 1; i != tmp.size(); ++ i)
+                str = str + "." + tmp[i];
+            res.push_back(str);
+        }
+        return;
+    }
+
+    std::string part;
+    for(int i = beg; i != s.size() && i < beg + 3; ++ i)
+    {
+        part.push_back(s[i]);
+
+        if(isValid(part))
+        {
+            tmp.push_back(part);
+            solver(s, i + 1, tmp, res);
+            tmp.pop_back();
+        }
+    }
+}
+
+std::vector<std::string> restoreIpAddresses(std::string s)
+{
+    std::vector<std::string> res;
+    std::vector<std::string> tmp;
+
+    solver(s, 0, tmp, res);
+
+    return res;
+}
+
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    std::string s = "25525511135";
+    std::vector<std::string> res = restoreIpAddresses(s);
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    for(std::vector<std::string>::size_type i = 0; i != res.size(); ++ i)
+        std::cout<<res[i]<<std::endl;
+    std::cout<<std::endl;
 
     system("pause");
     return 0;
