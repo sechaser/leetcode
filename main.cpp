@@ -5,71 +5,31 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+std::vector<int> grayCode(int n)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    std::vector<int> gray;
+    gray.push_back(0);
+    int inc = 1;
+
+    for(int i = 1; i <= n; ++ i)
+    {
+        for(int j = gray.size() - 1; j >= 0; -- j)
+            gray.push_back(gray[j] + inc);
+
+        inc <<= 1;
+    }
+
+    return gray;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    std::vector<int> gray = grayCode(3);
+    for(std::vector<int>::size_type i = 0; i != gray.size(); ++ i)
+        std::cout<<std::setw(4)<<gray[i];
+    std::cout<<std::endl;
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
 
 
     system("pause");
