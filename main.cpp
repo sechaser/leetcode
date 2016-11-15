@@ -5,72 +5,52 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+void solver(std::vector<int>& nums, std::vector<std::vector<int> >& res, std::vector<int>& tmp, int beg, int len)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(len == 0)
+    {
+        res.push_back(tmp);
+        return;
+    }
+
+    for(int i = beg; i != nums.size(); ++ i)
+    {
+        if(i > beg && nums[i] == nums[i - 1])
+            continue;
+
+        tmp.push_back(nums[i]);
+        solver(nums, res, tmp, i + 1, -- len);
+        tmp.pop_back();
+        ++ len;
+    }
+}
+
+std::vector<std::vector<int> > subsetsWithDup(std::vector<int>& nums)
+{
+    std::vector<std::vector<int> > res;
+    std::sort(nums.begin(), nums.end());
+
+    //The length of subset in range [0, nums.size()]
+    for(std::vector<int>::size_type len = 0; len <= nums.size(); ++ len)
+    {
+        std::vector<int> tmp;
+        solver(nums, res, tmp, 0, len);
+    }
+
+    return res;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
+    std::vector<int> nums{1, 2, 2};
+    std::vector<std::vector<int> > res = subsetsWithDup(nums);
+    for(std::vector<std::vector<int> >::size_type i = 0; i != res.size(); ++ i)
     {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
+        for(std::vector<int>::size_type j = 0; j != res[i].size(); ++ j)
+            std::cout<<std::setw(4)<<res[i][j];
+        std::cout<<std::endl;
     }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
 
     system("pause");
     return 0;
