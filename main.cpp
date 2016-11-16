@@ -5,72 +5,61 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+struct TreeNode
 {
     int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
+
+    TreeNode* left;
+    TreeNode* right;
+
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+void solver(std::vector<int>& res, TreeNode* root)
+{
+    if(root != NULL)
+    {
+        solver(res, root->left);
+        res.push_back(root->val);
+        solver(res, root->right);
+    }
+}
+
+std::vector<int> inorderTraversal(TreeNode* root)
+{
+    std::vector<int> res;
+    solver(res, root);
+    return res;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    TreeNode* node = (TreeNode*)malloc(sizeof(TreeNode));
+    node->val = 1;
+    node->left = NULL;
+    node->right = NULL;
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
+    TreeNode* root = node;
 
+    node = (TreeNode*)malloc(sizeof(TreeNode));
+    node->val = 2;
+    node->left = NULL;
+    node->right = NULL;
 
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
+    root->right = node;
 
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
+    node = (TreeNode*)malloc(sizeof(TreeNode));
+    node->val = 3;
+    node->left = NULL;
+    node->right = NULL;
 
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    root->right->left = node;
 
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
+    std::vector<int> res = inorderTraversal(root);
 
+    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
+        std::cout<<std::setw(4)<<res[i];
+    std::cout<<std::endl;
 
     system("pause");
     return 0;
