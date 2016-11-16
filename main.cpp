@@ -15,51 +15,62 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+std::vector<TreeNode*> solver(int min, int max)
+{
+    std::vector<TreeNode*> ret;
+
+    if(min > max)
+    {
+        ret.push_back(NULL);
+        return ret;
+    }
+
+    for(int i = min; i <= max; ++ i)
+    {
+        std::vector<TreeNode*> leftTree  = solver(min, i-1);
+        std::vector<TreeNode*> rightTree = solver(i+1, max);
+
+        for(int j = 0; j != leftTree.size(); ++ j)
+        {
+            for(int k = 0; k != rightTree.size(); ++ k)
+            {
+                TreeNode* root = new TreeNode(i);
+                root->left  = leftTree[j];
+                root->right = rightTree[k];
+                ret.push_back(root);
+            }
+        }
+    }
+
+    return ret;
+}
+
+std::vector<TreeNode*> generateTrees(int n)
+{
+    if(n == 0)
+        return std::vector<TreeNode*>{};
+    return solver(1, n);
+}
+
+void traverseInorder(TreeNode* root)
 {
     if(root != NULL)
     {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
+        traverseInorder(root->left);
+        std::cout<<std::setw(4)<<root->val;
+        traverseInorder(root->right);
     }
-}
-
-std::vector<int> inorderTraversal(TreeNode* root)
-{
-    std::vector<int> res;
-    solver(res, root);
-    return res;
 }
 
 int main()
 {
-    TreeNode* node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 1;
-    node->left = NULL;
-    node->right = NULL;
+    std::vector<TreeNode*> res = generateTrees(3);
 
-    TreeNode* root = node;
-
-    node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 2;
-    node->left = NULL;
-    node->right = NULL;
-
-    root->right = node;
-
-    node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 3;
-    node->left = NULL;
-    node->right = NULL;
-
-    root->right->left = node;
-
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    for(std::vector<TreeNode*>::size_type i = 0; i != res.size(); ++ i)
+    {
+        traverseInorder(res[i]);
+        std::cout<<std::endl;
+    }
 
     system("pause");
     return 0;
