@@ -15,21 +15,44 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+void inorder(TreeNode* root, TreeNode* &pre, TreeNode* &first, TreeNode* &second)
 {
-    if(root != NULL)
+    if(root == NULL)
+        return;
+
+    if(root->left != NULL)
+        inorder(root->left, pre, first, second);
+
+    if(pre != NULL)
     {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
+        if(first == NULL  && root->val < pre->val)
+            first = pre;
+        else if(first != NULL && root->val > first->val)
+        {
+            second = pre;
+            return;
+        }
     }
+
+    pre = root;
+    if(root->right != NULL)
+        inorder(root->right, pre, first, second);
 }
 
-std::vector<int> inorderTraversal(TreeNode* root)
+void recoverTree(TreeNode* root)
 {
-    std::vector<int> res;
-    solver(res, root);
-    return res;
+    TreeNode* pre = NULL, *first = NULL, *second = NULL;
+    inorder(root, pre, first, second);
+
+    if(first != NULL)
+    {
+        if(second == NULL)
+            second = pre;
+
+        int tmp = first->val;
+        first->val = second->val;
+        second->val = tmp;
+    }
 }
 
 int main()
@@ -55,11 +78,7 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
 
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
 
     system("pause");
     return 0;
