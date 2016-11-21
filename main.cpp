@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <queue>
 
 struct TreeNode
 {
@@ -15,20 +16,44 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
-{
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
 
-std::vector<int> inorderTraversal(TreeNode* root)
+std::vector<std::vector<int> > levelOrder(TreeNode* root)
 {
-    std::vector<int> res;
-    solver(res, root);
+    std::vector<std::vector<int> > res;
+    if(root == NULL)
+        return res;
+
+    std::queue<TreeNode*> qnode;
+    qnode.push(root);
+    qnode.push(NULL);
+
+    std::vector<int> level;
+
+    while(!qnode.empty())
+    {
+        TreeNode* tmp = qnode.front();
+        qnode.pop();
+
+        if(tmp != NULL)
+        {
+            level.push_back(tmp->val);
+
+            if(tmp->left != NULL)
+                qnode.push(tmp->left);
+            if(tmp->right != NULL)
+                qnode.push(tmp->right);
+        }
+        else
+        {
+            res.push_back(level);
+            if(!qnode.empty())
+            {
+                qnode.push(NULL);
+                level.clear();
+            }
+        }
+    }
+
     return res;
 }
 
@@ -53,13 +78,15 @@ int main()
     node->left = NULL;
     node->right = NULL;
 
-    root->right->left = node;
+    root->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    std::vector<std::vector<int> > res = levelOrder(root);
+    for(std::vector<std::vector<int> >::size_type i = 0; i != res.size(); ++ i)
+    {
+        for(std::vector<int>::size_type j = 0; j != res[i].size(); ++ j)
+            std::cout<<std::setw(4)<<res[i][j];
+        std::cout<<std::endl;
+    }
 
     system("pause");
     return 0;
