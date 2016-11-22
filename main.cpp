@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <queue>
 
 struct TreeNode
 {
@@ -15,22 +16,52 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
-{
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
 
-std::vector<int> inorderTraversal(TreeNode* root)
+//***********************************************Method 1********************************************
+//int maxDepth(TreeNode* root)
+//{
+//    if(root == NULL)
+//        return 0;
+
+//    return std::max(maxDepth(root->left), maxDepth(root->right)) + 1;
+//}
+
+
+
+//***********************************************Method 2**********************************************
+int maxDepth(TreeNode *root)
 {
-    std::vector<int> res;
-    solver(res, root);
+    if(root == NULL)
+        return 0;
+
+    int res = 0;
+    std::queue<TreeNode*> qnode;
+    qnode.push(root);
+    qnode.push(NULL);
+
+    while(!qnode.empty())
+    {
+        TreeNode* tmp = qnode.front();
+        qnode.pop();
+
+        if(tmp != NULL)
+        {
+            if(tmp->left)
+                qnode.push(tmp->left);
+            if(tmp->right)
+                qnode.push(tmp->right);
+        }
+        else
+        {
+            ++ res;
+            if(!qnode.empty())
+                qnode.push(NULL);
+        }
+    }
+
     return res;
 }
+
 
 int main()
 {
@@ -55,11 +86,7 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    std::cout<<maxDepth(root)<<std::endl;
 
     system("pause");
     return 0;
