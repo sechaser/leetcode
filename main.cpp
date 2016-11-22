@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <queue>
 
 struct TreeNode
 {
@@ -15,20 +16,47 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+std::vector<std::vector<int> > zigzagLevelOrder(TreeNode* root)
 {
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
+    std::vector<std::vector<int> > res;
+    if(root == NULL)
+        return res;
 
-std::vector<int> inorderTraversal(TreeNode* root)
-{
-    std::vector<int> res;
-    solver(res, root);
+    std::queue<TreeNode*> qnode;
+    qnode.push(root);
+    qnode.push(NULL);
+
+    bool flag = 0;
+    std::vector<int> level;
+    while(!qnode.empty())
+    {
+        TreeNode* tmp = qnode.front();
+        qnode.pop();
+
+        if(tmp != NULL)
+        {
+            level.push_back(tmp->val);
+            if(tmp->left)
+                qnode.push(tmp->left);
+            if(tmp->right)
+                qnode.push(tmp->right);
+        }
+        else
+        {
+            if(flag)
+                std::reverse(level.begin(), level.end());
+
+            res.push_back(level);
+            flag = !flag;
+
+            if(!qnode.empty())
+            {
+                level.clear();
+                qnode.push(NULL);
+            }
+        }
+    }
+
     return res;
 }
 
@@ -53,13 +81,8 @@ int main()
     node->left = NULL;
     node->right = NULL;
 
-    root->right->left = node;
+    root->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
 
     system("pause");
     return 0;
