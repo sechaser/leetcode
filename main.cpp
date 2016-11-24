@@ -15,50 +15,43 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+TreeNode* solver(std::vector<int>& nums, int l, int r)
+{
+    if(l > r)
+        return NULL;
+
+    int m = (l + r) / 2;
+    TreeNode* root = new TreeNode(nums[m]);
+    root->left  = solver(nums, l, m - 1);
+    root->right = solver(nums, m + 1, r);
+
+    return root;
+
+}
+
+TreeNode* sortedArrayToBST(std::vector<int>& nums)
+{
+    TreeNode* root = NULL;
+    if(nums.empty())
+        return root;
+    return solver(nums, 0, nums.size() - 1);
+}
+
+void inorder(TreeNode* root)
 {
     if(root != NULL)
     {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
+        inorder(root->left);
+        std::cout<<std::setw(4)<<root->val;
+        inorder(root->right);
     }
-}
-
-std::vector<int> inorderTraversal(TreeNode* root)
-{
-    std::vector<int> res;
-    solver(res, root);
-    return res;
 }
 
 int main()
 {
-    TreeNode* node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 1;
-    node->left = NULL;
-    node->right = NULL;
-
-    TreeNode* root = node;
-
-    node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 2;
-    node->left = NULL;
-    node->right = NULL;
-
-    root->right = node;
-
-    node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 3;
-    node->left = NULL;
-    node->right = NULL;
-
-    root->right->left = node;
-
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
+    std::vector<int> nums {1, 2, 4};
+    TreeNode* root = sortedArrayToBST(nums);
+    inorder(root);
     std::cout<<std::endl;
 
     system("pause");
