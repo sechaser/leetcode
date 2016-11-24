@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <unordered_map>
 
 struct TreeNode
 {
@@ -15,51 +16,50 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+TreeNode* solver(std::vector<int>& inorder, int inL, int inR, std::vector<int>& postorder, int postL, int postR,
+                 std::unordered_map<int, int>& mp)
+{
+    if(inL > inR || postL > postR)
+        return NULL;
+
+    TreeNode* root = new TreeNode(postorder[postR]);
+    int index = mp[postorder[postR]];
+
+    root->left  = solver(inorder, inL, index - 1, postorder, postL, postL + (index - inL) - 1, mp);
+    root->right = solver(inorder, index + 1, inR, postorder, postL + (index - inL), postR - 1, mp);
+
+    return root;
+}
+
+TreeNode* buildTree(std::vector<int>& inorder, std::vector<int>& postorder)
+{
+    if(inorder.empty() || postorder.empty())
+        return NULL;
+
+    std::unordered_map<int, int> mp;
+    for(std::vector<int>::size_type i = 0; i != inorder.size(); ++ i)
+        mp[inorder[i]] = i;
+
+    return solver(inorder, 0, inorder.size() - 1, postorder, 0, postorder.size() - 1, mp);
+}
+
+void inorderTraversal(TreeNode* root)
 {
     if(root != NULL)
     {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
+        inorderTraversal(root->left);
+        std::cout<<std::setw(4)<<root->val;
+        inorderTraversal(root->right);
     }
-}
-
-std::vector<int> inorderTraversal(TreeNode* root)
-{
-    std::vector<int> res;
-    solver(res, root);
-    return res;
 }
 
 int main()
 {
-    TreeNode* node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 1;
-    node->left = NULL;
-    node->right = NULL;
+    std::vector<int> inorder{4,2,5,1,6,3,7};
+    std::vector<int> postorder{4,5,2,6,7,3,1};
 
-    TreeNode* root = node;
-
-    node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 2;
-    node->left = NULL;
-    node->right = NULL;
-
-    root->right = node;
-
-    node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 3;
-    node->left = NULL;
-    node->right = NULL;
-
-    root->right->left = node;
-
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    TreeNode* root = buildTree(inorder, postorder);
+    inorderTraversal(root);
 
     system("pause");
     return 0;
