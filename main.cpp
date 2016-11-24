@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <unordered_map>
 
 struct TreeNode
 {
@@ -25,41 +26,50 @@ void solver(std::vector<int>& res, TreeNode* root)
     }
 }
 
-std::vector<int> inorderTraversal(TreeNode* root)
+TreeNode* solver(std::vector<int>& preorder, int preL, int preR, std::vector<int>& inorder, int inL, int inR,
+                 std::unordered_map<int, int>& mp)
 {
-    std::vector<int> res;
-    solver(res, root);
-    return res;
+    if(preL > preR || inL > inR)
+        return NULL;
+
+    TreeNode* root = new TreeNode(preorder[preL]);
+    int index = mp[preorder[preL]];
+
+    root->left  = solver(preorder, preL + 1, preL + (index - inL), inorder, inL, index - 1, mp);
+    root->right = solver(preorder, preL + (index - inL) + 1, preR, inorder, index + 1, inR, mp);
+
+    return root;
+}
+
+TreeNode* buildTree(std::vector<int>& preorder, std::vector<int>& inorder)
+{
+    if(preorder.empty() || inorder.empty())
+        return NULL;
+
+    std::unordered_map<int, int> mp;
+    for(std::vector<int>::size_type i = 0; i != inorder.size(); ++ i)
+        mp[inorder[i]] = i;
+
+    return solver(preorder, 0, preorder.size() - 1, inorder, 0, inorder.size() - 1, mp);
+}
+
+void inorder(TreeNode* root)
+{
+    if(root != NULL)
+    {
+        inorder(root->left);
+        std::cout<<std::setw(4)<<root->val;
+        inorder(root->right);
+    }
 }
 
 int main()
 {
-    TreeNode* node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 1;
-    node->left = NULL;
-    node->right = NULL;
+    std::vector<int> preOrder{1, 2, 4, 5, 3, 6, 7};
+    std::vector<int> inOrder {4, 2, 5, 1, 6, 3, 7};
 
-    TreeNode* root = node;
-
-    node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 2;
-    node->left = NULL;
-    node->right = NULL;
-
-    root->right = node;
-
-    node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 3;
-    node->left = NULL;
-    node->right = NULL;
-
-    root->right->left = node;
-
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    TreeNode* root = buildTree(preOrder, inOrder);
+    inorder(root);
 
     system("pause");
     return 0;
