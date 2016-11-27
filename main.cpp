@@ -15,22 +15,17 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+bool hasPathSum(TreeNode* root, int sum)
 {
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
+    if(root == NULL)
+        return false;
+
+    if(root->left == NULL && root->right == NULL && root->val == sum)
+        return true;
+
+    return (hasPathSum(root->left, sum - root->val) || hasPathSum(root->right, sum - root->val));
 }
 
-std::vector<int> inorderTraversal(TreeNode* root)
-{
-    std::vector<int> res;
-    solver(res, root);
-    return res;
-}
 
 int main()
 {
@@ -55,11 +50,8 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
+    std::cout<<hasPathSum(root, 4)<<std::endl;
 
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
 
     system("pause");
     return 0;
