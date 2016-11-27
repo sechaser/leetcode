@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <queue>
 
 struct TreeNode
 {
@@ -15,21 +16,93 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
-{
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
+//*************************************************Method 1*************************************
+//void solver(TreeNode* root, int tmp, int& res)
+//{
+//    if(root == NULL)
+//    {
+//        res = 0;
+//        return;
+//    }
 
-std::vector<int> inorderTraversal(TreeNode* root)
+//    ++ tmp;
+//    //Leaf node
+//    if(root->left == NULL && root->right == NULL)
+//    {
+//        res = std::min(tmp, res);
+//        return;
+//    }
+
+//    if(root->left != NULL)
+//        solver(root->left, tmp, res);
+
+//    if(root->right != NULL)
+//        solver(root->right, tmp, res);
+//}
+
+//int minDepth(TreeNode* root)
+//{
+//    int res = INT_MAX;
+//    int tmp = 0;
+//    solver(root, tmp, res);
+
+//    return res;
+//}
+
+
+
+//**************************Method 2********************************
+//int minDepth(TreeNode* root)
+//{
+//    if(root == NULL)
+//        return 0;
+
+//    if(root->left == NULL)
+//        return minDepth(root->right) + 1;
+
+//    if(root->right == NULL)
+//        return minDepth(root->left) + 1;
+
+//    return std::min(minDepth(root->left), minDepth(root->right)) + 1;
+//}
+
+
+
+//****************************Method 3********************************
+int minDepth(TreeNode *root)
 {
-    std::vector<int> res;
-    solver(res, root);
-    return res;
+    if(root == NULL)
+        return 0;
+
+    int level = 1;
+    std::queue<TreeNode*> qnode;
+    qnode.push(root);
+    qnode.push(NULL);
+
+    while(!qnode.empty())
+    {
+        TreeNode* tmp = qnode.front();
+        qnode.pop();
+
+        if(tmp != NULL)
+        {
+            if(tmp->left == NULL && tmp->right == NULL)
+                return level;
+
+            if(tmp->left)
+                qnode.push(tmp->left);
+            if(tmp->right)
+                qnode.push(tmp->right);
+        }
+        else
+        {
+            ++ level;
+            if(!qnode.empty())
+                qnode.push(NULL);
+        }
+    }
+
+    return level;
 }
 
 int main()
@@ -55,11 +128,8 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
+    std::cout<<minDepth(root)<<std::endl;
 
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
 
     system("pause");
     return 0;
