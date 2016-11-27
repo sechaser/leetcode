@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <iomanip>
 
+#include <math.h>
+
 struct TreeNode
 {
     int val;
@@ -15,21 +17,28 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+int solver(TreeNode* root)
 {
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
+   if(root == NULL)
+       return 0;
+
+   int left = solver(root->left);
+   if(left == (-1))
+       return -1;
+
+   int right = solver(root->right);
+   if(right == (-1))
+       return -1;
+
+   if(std::abs(left - right) > 1)
+       return -1;
+
+   return std::max(left, right) + 1;
 }
 
-std::vector<int> inorderTraversal(TreeNode* root)
+bool isBalanced(TreeNode* root)
 {
-    std::vector<int> res;
-    solver(res, root);
-    return res;
+    return solver(root) == (-1) ? 0 : 1;
 }
 
 int main()
@@ -53,13 +62,9 @@ int main()
     node->left = NULL;
     node->right = NULL;
 
-    root->right->left = node;
+    root->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    std::cout<<isBalanced(root)<<std::endl;
 
     system("pause");
     return 0;
