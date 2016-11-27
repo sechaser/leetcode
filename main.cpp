@@ -15,21 +15,37 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+void solver(TreeNode* root, int sum, std::vector<int>& path, std::vector<std::vector<int> >& allPaths)
 {
-    if(root != NULL)
+    if(root == NULL)
+        return;
+
+    sum = sum - root->val;
+    path.push_back(root->val);
+
+    if(root->left == NULL && root->right == NULL)
     {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
+        if(sum == 0)
+            allPaths.push_back(path);
     }
+    else
+    {
+        if(root->left != NULL)
+            solver(root->left, sum, path, allPaths);
+        if(root->right != NULL)
+            solver(root->right, sum, path, allPaths);
+    }
+
+    path.pop_back();
 }
 
-std::vector<int> inorderTraversal(TreeNode* root)
+std::vector<std::vector<int> > pathSum(TreeNode* root, int sum)
 {
-    std::vector<int> res;
-    solver(res, root);
-    return res;
+    std::vector<int> path;
+    std::vector<std::vector<int> > allPaths;
+    solver(root, sum, path, allPaths);
+
+    return allPaths;
 }
 
 int main()
@@ -55,11 +71,14 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
+    std::vector<std::vector<int> > res = pathSum(root, 2);
+    for(std::vector<std::vector<int> >::size_type i = 0; i != res.size(); ++ i)
+    {
+        for(std::vector<int>::size_type j = 0; j != res[i].size(); ++ j)
+            std::cout<<std::setw(4)<<res[i][j];
+        std::cout<<std::endl;
+    }
 
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
 
     system("pause");
     return 0;
