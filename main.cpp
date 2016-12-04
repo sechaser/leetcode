@@ -5,72 +5,41 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+#include <string.h>
+
+int numDistinct(std::string s, std::string t)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    int lens = s.size(), lent = t.size();
+    if(lent == 0)
+        return 1;
+    else if(lens == 0)
+        return 0;
+
+    int dp[lens+1][lent+1];
+    memset(dp, 0, sizeof(dp));
+
+    for(int i = 0; i <= lens; ++ i)
+        dp[i][0] = 1;
+
+    for(int i = 1; i <= lens; ++ i)
+    {
+        for(int j = 1; j <= lent; ++ j)
+        {
+            if(s[i-1] == t[j-1])
+                dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
+            else
+                dp[i][j] = dp[i-1][j];
+        }
+    }
+
+    return dp[lens][lent];
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::string s = "rabbbit", t = "rabbit";
+    std::cout<<numDistinct(s, t)<<std::endl;
 
     system("pause");
     return 0;
