@@ -5,72 +5,30 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+std::vector<int> getRow(int rowIndex)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    std::vector<int> res(rowIndex+1, 1);
+    for(int row = 1; row <= rowIndex; ++ row)
+    {
+        int prev = 1;
+        for(int i = 1; i < row; ++ i)
+        {
+            int temp = res[i];
+            res[i] += prev;
+            prev = temp;
+        }
+    }
+
+    return res;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> res = getRow(3);
+    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
+        std::cout<<std::setw(4)<<res[i];
+    std::cout<<std::endl;
 
     system("pause");
     return 0;
