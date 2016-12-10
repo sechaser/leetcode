@@ -4,62 +4,65 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <queue>
 
-struct TreeNode
+struct TreeLinkNode
 {
     int val;
 
-    TreeNode* left;
-    TreeNode* right;
+    TreeLinkNode* left;
+    TreeLinkNode* right;
+    TreeLinkNode* next;
 
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL){}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+void connect(TreeLinkNode* root)
 {
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
+    if(root == NULL)
+        return;
 
-std::vector<int> inorderTraversal(TreeNode* root)
-{
-    std::vector<int> res;
-    solver(res, root);
-    return res;
+    std::queue<TreeLinkNode*> qnode;
+    qnode.push(root);
+    qnode.push(NULL);   //The gap between every level
+
+    TreeLinkNode* pre = NULL;
+    while(!qnode.empty())
+    {
+        TreeLinkNode* cur = qnode.front();
+        qnode.pop();
+
+        if(cur != NULL)
+        {
+            if(cur->left)
+                qnode.push(cur->left);
+            if(cur->right)
+                qnode.push(cur->right);
+        }
+        else if(!qnode.empty())
+            qnode.push(NULL);
+
+        if(pre != NULL)
+            pre->next = cur;
+
+        pre = cur;
+    }
 }
 
 int main()
 {
-    TreeNode* node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 1;
-    node->left = NULL;
-    node->right = NULL;
+    TreeLinkNode* node = new TreeLinkNode(1);
+    TreeLinkNode* root = node;
 
-    TreeNode* root = node;
+    node = new TreeLinkNode(2);
+    root->left = node;
 
-    node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 2;
-    node->left = NULL;
-    node->right = NULL;
-
+    node = new TreeLinkNode(3);
     root->right = node;
 
-    node = (TreeNode*)malloc(sizeof(TreeNode));
-    node->val = 3;
-    node->left = NULL;
-    node->right = NULL;
+    connect(root);
 
-    root->right->left = node;
-
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    std::cout<<(root->left->next->val)<<std::endl;
 
     system("pause");
     return 0;
