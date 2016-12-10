@@ -5,70 +5,36 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+std::vector<std::vector<int> > generate(int numRows)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    std::vector<std::vector<int> > res;
+    if(numRows <= 0)
+        return res;
 
+    for(int row = 1; row <= numRows; ++ row)
+    {
+        std::vector<int> rowRes(row, 1);
+        if(row <= 2)
+            res.push_back(rowRes);
+        else
+        {
+            for(int i = 1; i < row-1; ++ i)
+                rowRes[i] = res[row-2][i-1] + res[row-2][i];
+            res.push_back(rowRes);
+        }
+    }
+
+    return res;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
+    std::vector<std::vector<int> > res = generate(5);
+    for(std::vector<std::vector<int> >::size_type i = 0; i != res.size(); ++ i)
     {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
+        for(std::vector<int>::size_type j = 0; j != res[i].size(); ++ j)
+            std::cout<<std::setw(4)<<res[i][j];
+        std::cout<<std::endl;
     }
 
 
