@@ -5,23 +5,52 @@
 #include <algorithm>
 #include <iomanip>
 
+
+//*************************************Method 1*************************************
+//std::vector<std::vector<int> > generate(int numRows)
+//{
+//    std::vector<std::vector<int> > res;
+//    if(numRows <= 0)
+//        return res;
+
+//    for(int row = 1; row <= numRows; ++ row)
+//    {
+//        std::vector<int> rowRes(row, 1);
+//        if(row <= 2)
+//            res.push_back(rowRes);
+//        else
+//        {
+//            for(int i = 1; i < row-1; ++ i)
+//                rowRes[i] = res[row-2][i-1] + res[row-2][i];
+//            res.push_back(rowRes);
+//        }
+//    }
+
+//    return res;
+//}
+
+
+//***********************************Method 2*****************************************
 std::vector<std::vector<int> > generate(int numRows)
 {
     std::vector<std::vector<int> > res;
-    if(numRows <= 0)
+    if(numRows < 1)
         return res;
 
-    for(int row = 1; row <= numRows; ++ row)
+    std::vector<int> row(1, 1);
+    res.push_back(row);
+
+    for(int i = 2; i <= numRows; ++ i)
     {
-        std::vector<int> rowRes(row, 1);
-        if(row <= 2)
-            res.push_back(rowRes);
-        else
+        int prev = 1;
+        for(int j = 1; j < i-1; ++ j)
         {
-            for(int i = 1; i < row-1; ++ i)
-                rowRes[i] = res[row-2][i-1] + res[row-2][i];
-            res.push_back(rowRes);
+            int tmp = row[j];
+            row[j] += prev;
+            prev = tmp;
         }
+        row.push_back(1);
+        res.push_back(row);
     }
 
     return res;
