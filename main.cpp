@@ -5,72 +5,31 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+int minimumTotal(std::vector<std::vector<int> >& triangle)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(triangle.empty())
+        return 0;
+
+    std::vector<int>::size_type sz = triangle.size();
+    std::vector<int> dp(sz, 0);
+
+    for(int i = 0; i != sz; ++ i)
+        dp[i] = triangle[sz-1][i];
+
+    for(int i = sz - 2; i >= 0; -- i)
+    {
+        for(int j = 0; j <= i; ++ j)
+            dp[j] = triangle[i][j] + std::min(dp[j], dp[j+1]);
+    }
+
+    return dp[0];
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<std::vector<int> > triangle{{1}, {2, 1}, {3,2,1}, {4,3,2,1}};
+    std::cout<<minimumTotal(triangle)<<std::endl;
 
     system("pause");
     return 0;
