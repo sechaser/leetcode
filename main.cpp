@@ -5,72 +5,37 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+int maxProfit(std::vector<int>& prices)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(prices.empty())
+        return 0;
+
+    int res = 0;
+    int i = 0;
+
+    std::string::size_type sz = prices.size();
+    prices.push_back(-1);
+
+    while(i != sz)
+    {
+        int beg = i;
+        while(prices[i+1] > prices[i])
+            ++ i;
+
+        res = res + (prices[i] - prices[beg]);
+        ++ i;
+    }
+    prices.pop_back();
+
+    return res;
+}
+
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> prices{9, 8};
+    std::cout<<maxProfit(prices)<<std::endl;
 
     system("pause");
     return 0;
