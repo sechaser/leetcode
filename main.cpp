@@ -15,22 +15,34 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+int helper(TreeNode* root, std::vector<int>& res)
 {
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
+    if(root == NULL)
+        return 0;
+
+    int left  = helper(root->left, res);
+    int right = helper(root->right, res);
+    int cur   = root->val + (left > 0 ? left : 0) + (right > 0 ? right : 0);
+
+    if(cur > res[0])
+        res[0] = cur;
+
+    return root->val + std::max(left, std::max(right, 0));
 }
 
-std::vector<int> inorderTraversal(TreeNode* root)
+int maxPathSum(TreeNode* root)
 {
+    if(root == NULL)
+        return 0;
+
     std::vector<int> res;
-    solver(res, root);
-    return res;
+    res.push_back(INT_MIN);
+
+    helper(root, res);
+
+    return res[0];
 }
+
 
 int main()
 {
@@ -53,13 +65,9 @@ int main()
     node->left = NULL;
     node->right = NULL;
 
-    root->right->left = node;
+    root->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    std::cout<<maxPathSum(root)<<std::endl;
 
     system("pause");
     return 0;
