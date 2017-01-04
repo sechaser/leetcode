@@ -4,73 +4,49 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <cctype>
 
-struct ListNode
+
+bool isPalidrome(std::string s)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(s.empty())
+        return true;
 
+    std::string::size_type low = 0, high = s.size() - 1;
+
+    while(low < high)
+    {
+        if(!isalnum(s[low]))
+        {
+            ++ low;
+            continue;
+        }
+        else if(!isalnum(s[high]))
+        {
+            -- high;
+            continue;
+        }
+        else
+        {
+            if(tolower(s[low]) == tolower(s[high]))
+            {
+                ++ low;
+                -- high;
+                continue;
+            }
+            else
+                return false;
+        }
+    }
+
+    return true;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    std::string s = "1234 321";
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::cout<<isPalidrome(s)<<std::endl;
 
     system("pause");
     return 0;
