@@ -15,21 +15,27 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+void solver(TreeNode* root, int curSum, int& sum)
 {
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
+    curSum = curSum * 10 + root->val;
+    if(root->left == NULL && root->right == NULL)
+        sum += curSum;
+
+    if(root->left)
+        solver(root->left, curSum, sum);
+    if(root->right)
+        solver(root->right, curSum, sum);
 }
 
-std::vector<int> inorderTraversal(TreeNode* root)
+int sumNumbers(TreeNode* root)
 {
-    std::vector<int> res;
-    solver(res, root);
-    return res;
+    if(root == NULL)
+        return 0;
+
+    int sum = 0;
+    solver(root, 0, sum);
+
+    return sum;
 }
 
 int main()
@@ -38,28 +44,21 @@ int main()
     node->val = 1;
     node->left = NULL;
     node->right = NULL;
-
     TreeNode* root = node;
 
     node = (TreeNode*)malloc(sizeof(TreeNode));
     node->val = 2;
     node->left = NULL;
     node->right = NULL;
-
     root->right = node;
 
     node = (TreeNode*)malloc(sizeof(TreeNode));
     node->val = 3;
     node->left = NULL;
     node->right = NULL;
+    root->left = node;
 
-    root->right->left = node;
-
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    std::cout<<sumNumbers(root)<<std::endl;
 
     system("pause");
     return 0;
