@@ -4,73 +4,52 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <unordered_set>
 
-struct ListNode
+int longsetConsecutive(std::vector<int>& nums)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    if(nums.empty())
+        return 0;
+
+    std::unordered_set<int> ht;
+    for(std::vector<int>::size_type i = 0; i != nums.size(); ++ i)
+        ht.insert(nums[i]);
+
+    int maxLen = 1;
+    for(std::vector<int>::size_type i = 0; i != nums.size(); ++ i)
+    {
+//        if(ht.empty())
+//            break;
+
+        int curNum = nums[i];
+        int curLen = 0;
+
+        while(ht.count(curNum))
+        {
+            ++ curLen;
+            ht.erase(curNum);
+            ++ curNum;
+        }
+
+        curNum = nums[i] - 1;
+        while(ht.count(curNum))
+        {
+            ++ curLen;
+            ht.erase(curNum);
+            -- curNum;
+        }
+
+        maxLen = std::max(maxLen, curLen);
+    }
+
+    return maxLen;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> nums{100, 4, 200, 1, 3, 2};
+    std::cout<<longsetConsecutive(nums)<<std::endl;
 
     system("pause");
     return 0;
