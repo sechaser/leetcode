@@ -5,72 +5,25 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+struct UndirectedGraphNode
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
+    int label;
+    std::vector<UndirectedGraphNode*> neighbors;
+    UndirectedGraphNode(int x): label(x) {}
 };
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    UndirectedGraphNode a(0);
+    UndirectedGraphNode b(1);
+    UndirectedGraphNode c(2);
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
+    a.neighbors.push_back(&b);
+    a.neighbors.push_back(&c);
 
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    b.neighbors.push_back(&c);
+    c.neighbors.push_back(&c);
 
     system("pause");
     return 0;
