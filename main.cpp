@@ -41,38 +41,74 @@ struct UndirectedGraphNode
 //}
 
 /* BFS */
-UndirectedGraphNode* cloneGraph(UndirectedGraphNode* node)
+//UndirectedGraphNode* cloneGraph(UndirectedGraphNode* node)
+//{
+//    if(node == NULL)
+//        return NULL;
+
+//    std::unordered_map<int, UndirectedGraphNode*> mp;
+//    UndirectedGraphNode* new_node = new UndirectedGraphNode(node->label);
+
+//    mp[node->label] = new_node;
+//    std::queue<UndirectedGraphNode*> toVisit;
+//    toVisit.push(node);
+
+//    while(!toVisit.empty())
+//    {
+//        UndirectedGraphNode* cur = toVisit.front();
+//        toVisit.pop();
+
+//        for(UndirectedGraphNode* neigh : cur->neighbors)
+//        {
+//            if(!mp.count(neigh->label))
+//            {
+//                UndirectedGraphNode* tmp = new UndirectedGraphNode(neigh->label);
+//                mp[neigh->label] = tmp;
+//                toVisit.push(neigh);
+//            }
+//            mp[cur->label]->neighbors.push_back(mp[neigh->label]);
+//        }
+//    }
+
+//    return new_node;
+//}
+
+
+UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node)
 {
-    if(node == NULL)
+    if(!node)
         return NULL;
+    UndirectedGraphNode *p1 = node;
+    UndirectedGraphNode *p2 = new UndirectedGraphNode(node->label);
+    std::unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> ht;
+    std::queue<UndirectedGraphNode*> q;
 
-    std::unordered_map<int, UndirectedGraphNode*> mp;
-    UndirectedGraphNode* new_node = new UndirectedGraphNode(node->label);
+    q.push(node);
+    ht[node] = p2;
 
-    mp[node->label] = new_node;
-    std::queue<UndirectedGraphNode*> toVisit;
-    toVisit.push(node);
-
-    while(!toVisit.empty())
+    while(!q.empty())
     {
-        UndirectedGraphNode* cur = toVisit.front();
-        toVisit.pop();
+        p1 = q.front();
+        p2 = ht[p1];
+        q.pop();
 
-        for(UndirectedGraphNode* neigh : cur->neighbors)
+        for(int i=0; i<p1->neighbors.size(); i++)
         {
-            if(!mp.count(neigh->label))
+            UndirectedGraphNode *nb = p1->neighbors[i];
+            if(ht.count(nb))
+                p2->neighbors.push_back(ht[nb]);
+            else
             {
-                UndirectedGraphNode* tmp = new UndirectedGraphNode(neigh->label);
-                mp[neigh->label] = tmp;
-                toVisit.push(neigh);
+                UndirectedGraphNode *temp = new UndirectedGraphNode(nb->label);
+                p2->neighbors.push_back(temp);
+                ht[nb] = temp;
+                q.push(nb);
             }
-            mp[cur->label]->neighbors.push_back(mp[neigh->label]);
         }
     }
 
-    return new_node;
+    return ht[node];
 }
-
 int main()
 {
     UndirectedGraphNode a(0);
