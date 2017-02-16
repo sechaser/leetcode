@@ -5,72 +5,32 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+int candy(std::vector<int>& ratings)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    std::vector<int> candyNum(ratings.size(), 1);
+
+    for(int i = 1; i != ratings.size(); ++ i)
+    {
+        if(ratings[i] > ratings[i - 1])
+            candyNum[i] = candyNum[i-1] + 1;
+    }
+
+    for(int i = ratings.size() - 2; i >= 0; -- i)
+    {
+        if((ratings[i] > ratings[i+1]) && (candyNum[i] <= candyNum[i+1]))
+            candyNum[i] = candyNum[i+1] + 1;
+    }
+
+    int res = std::accumulate(candyNum.begin(), candyNum.end(), 0);
+
+    return res;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> ratings{1, 3, 2, 4, 6, 3};
+    std::cout<<candy(ratings)<<std::endl;
 
     system("pause");
     return 0;
