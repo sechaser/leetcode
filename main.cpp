@@ -5,72 +5,36 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+int canCompleteCircuit(std::vector<int>& gas, std::vector<int>& cost)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    int sz = gas.size();
+
+    int start = 0, netGasSum = 0, curGasSum = 0;
+    for(int i = 0; i != sz; ++ i)
+    {
+        netGasSum += (gas[i] - cost[i]);
+        curGasSum += (gas[i] - cost[i]);
+
+        if(curGasSum < 0)
+        {
+            start = i + 1;
+            curGasSum = 0;
+        }
+    }
+
+    if(netGasSum < 0)
+        return -1;
+    else
+        return start;
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    std::vector<int> gas{3, 2, 1, 5};
+    std::vector<int> cost{2, 3, 2, 1};
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::cout<<canCompleteCircuit(gas, cost)<<std::endl;
 
     system("pause");
     return 0;
