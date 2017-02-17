@@ -4,73 +4,37 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <unordered_set>
 
-struct ListNode
+//space:O(n)
+//int singleNumber(std::vector<int>& nums)
+//{
+//    std::unordered_set<int> ht;
+
+//    for(std::vector<int>::size_type t = 0; t != nums.size(); ++ t)
+//    {
+//        if(ht.count(nums[t]))
+//            ht.erase(nums[t]);
+//        else
+//            ht.insert(nums[t]);
+//    }
+
+//    return *ht.begin();
+//}
+
+//No extra memory
+int singleNumber(std::vector<int>& nums)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    for(int i = 1; i < nums.size(); ++ i)
+        nums[0] ^= nums[i];
 
+    return nums[0];
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> nums{1, 1, 2, 3, 2, 5, 3};
+    std::cout<<singleNumber(nums)<<std::endl;
 
     system("pause");
     return 0;
