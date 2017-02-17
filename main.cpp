@@ -4,73 +4,29 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <map>
+#include <iterator>
 
-struct ListNode
-{
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+//int singleNumber(std::vector<int>& nums)
+//{
+//    std::map<int, int> mp;
+
+//    for(int i = 0; i != nums.size(); ++ i)
+//        ++ mp[nums[i]];
+
+//    for(std::map<int, int>::iterator it = mp.begin(); it != mp.end(); ++ it)
+//    {
+//        if(it->second == 1)
+//            return it->first;
+//    }
+//}
+
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::vector<int> nums{1, 2, 3, 2, 1, 2, 1};
+    std::cout<<singleNumber(nums)<<std::endl;
 
     system("pause");
     return 0;
