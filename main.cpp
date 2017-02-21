@@ -9,6 +9,9 @@ struct ListNode
 
 ListNode* removeNthFromEnd(ListNode* head, int n)
 {
+    if(!head)
+        return head;
+
     ListNode* node = (ListNode*)malloc(sizeof(ListNode));
     node->next = head;
     ListNode* p = node, *q = node;
