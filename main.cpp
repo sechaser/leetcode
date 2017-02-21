@@ -36,42 +36,42 @@
 //}
 
 //Funtion 1
-std::vector<std::vector<int> > threeSum(std::vector<int>& nums)
-{
-    std::vector<std::vector<int> > res;
-    if(nums.size() < 3)
-        return res;
+//std::vector<std::vector<int> > threeSum(std::vector<int>& nums)
+//{
+//    std::vector<std::vector<int> > res;
+//    if(nums.size() < 3)
+//        return res;
 
-    size_t sz = nums.size();
-    std::sort(nums.begin(), nums.end());
+//    size_t sz = nums.size();
+//    std::sort(nums.begin(), nums.end());
 
-    for(std::vector<int>::size_type i = 0; i != sz-2; ++ i)
-    {
-        if(i > 0 && nums[i] == nums[i - 1])
-            continue;
-        for(std::vector<int>::size_type j = i+1; j != sz-1; ++ j)
-        {
-            for(std::vector<int>::size_type k = j+1; k != sz; ++ k)
-            {
-                if(nums[i] + nums[j] + nums[k] == 0)
-                {
-                    std::vector<int> oneres{nums[i], nums[j], nums[k]};
-                    res.push_back(oneres);
-                    break;
-                }
-            }
-        }
-    }
+//    for(std::vector<int>::size_type i = 0; i != sz-2; ++ i)
+//    {
+//        if(i > 0 && nums[i] == nums[i - 1])
+//            continue;
+//        for(std::vector<int>::size_type j = i+1; j != sz-1; ++ j)
+//        {
+//            for(std::vector<int>::size_type k = j+1; k != sz; ++ k)
+//            {
+//                if(nums[i] + nums[j] + nums[k] == 0)
+//                {
+//                    std::vector<int> oneres{nums[i], nums[j], nums[k]};
+//                    res.push_back(oneres);
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
-    //There is no need for the second sorting, if add this time limit exceed.
-    //Delete this this function will pass.
-//    std::sort(res.begin(), res.end());
+//    //There is no need for the second sorting, if add this time limit exceed.
+//    //Delete this this function will pass.
+////    std::sort(res.begin(), res.end());
 
-    std::vector<std::vector<int> >::iterator it = std::unique(res.begin(), res.end());
-    res.erase(it, res.end());
+//    std::vector<std::vector<int> >::iterator it = std::unique(res.begin(), res.end());
+//    res.erase(it, res.end());
 
-    return res;
-}
+//    return res;
+//}
 
 //Funtion 2
 //std::vector<std::vector<int> > threeSum(std::vector<int>& nums)
@@ -117,6 +117,48 @@ std::vector<std::vector<int> > threeSum(std::vector<int>& nums)
 
 //    return res;
 //}
+
+
+std::vector<std::vector<int> > threeSum(std::vector<int>& nums)
+{
+    std::vector<std::vector<int> > res;
+    if(nums.size() < 3)
+        return res;
+
+    std::sort(nums.begin(), nums.end());
+    int target;
+    int l, r;
+    for(std::vector<int>::size_type i = 0; i != nums.size() - 2; ++ i)
+    {
+        if(i > 0 && nums[i] == nums[i - 1])
+            continue;
+
+        target = (-nums[i]);
+        l = i + 1, r = nums.size() - 1;
+
+        while(l < r)
+        {
+            if(nums[l] + nums[r] == target)
+            {
+                res.push_back(std::vector<int>{nums[i], nums[l], nums[r]});
+
+                int lvalue = nums[l], rvalue = nums[r];
+                ++ l;
+                -- r;
+                while(l < r && nums[l] == lvalue)
+                    ++ l;
+                while(l < r && nums[r] == rvalue)
+                    -- r;
+            }
+            else if(nums[l] + nums[r] > target)
+                -- r;
+            else
+                ++ l;
+        }
+    }
+
+    return res;
+}
 
 int main()
 {
