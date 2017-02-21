@@ -38,64 +38,97 @@
 //}
 
 //
+//int threeSumClosest(std::vector<int>& nums, int target)
+//{
+//    std::vector<int>::size_type sz = nums.size();
+//    sort(nums.begin(), nums.end());
+
+//    int res, mingap = INT_MAX;
+//    int twoSum;
+//    std::vector<int>::size_type head, tail;
+//    for(std::vector<int>::size_type i = 0; i != sz-2; ++ i)
+//    {
+//        int target2 = target - nums[i];
+
+//        head = i + 1;
+//        tail = sz - 1;
+//        int roundgap = INT_MAX;
+//        int tmpres;
+
+//        while(head < tail)
+//        {
+//            twoSum = nums[head] + nums[tail];
+//            if(twoSum < target2)
+//            {
+//                if(target2 - twoSum < roundgap)
+//                {
+//                    roundgap = target2 - twoSum;
+//                    tmpres   = twoSum;
+//                }
+//                ++ head;
+//            }
+//            else if(twoSum > target2)
+//            {
+//                if(twoSum - target2 < roundgap)
+//                {
+//                    roundgap = twoSum - target2;
+//                    tmpres   = twoSum;
+//                }
+//                -- tail;
+//            }
+//            else
+//                return target;
+//        }
+
+//        if(std::abs(tmpres + nums[i] - target) < mingap)
+//        {
+//            mingap = abs(tmpres + nums[i] - target);
+//            res    = tmpres + nums[i];
+//            if(res == target)
+//                return res;
+//        }
+//    }
+
+//    return res;
+//}
+
 int threeSumClosest(std::vector<int>& nums, int target)
 {
-    std::vector<int>::size_type sz = nums.size();
-    sort(nums.begin(), nums.end());
+    if(nums.size() < 3)
+        return INT_MAX;
 
-    int res, mingap = INT_MAX;
-    int twoSum;
-    std::vector<int>::size_type head, tail;
-    for(std::vector<int>::size_type i = 0; i != sz-2; ++ i)
+    int minDiff = INT_MAX;
+    int l, r;
+    std::sort(nums.begin(), nums.end());
+
+    for(std::vector<int>::size_type i = 0; i != nums.size() - 2; ++ i)
     {
-        int target2 = target - nums[i];
-
-        head = i + 1;
-        tail = sz - 1;
-        int roundgap = INT_MAX;
-        int tmpres;
-
-        while(head < tail)
+        if(i > 0 && nums[i] == nums[i-1])
+            continue;
+        l = i + 1, r = nums.size() - 1;
+        while(l < r)
         {
-            twoSum = nums[head] + nums[tail];
-            if(twoSum < target2)
-            {
-                if(target2 - twoSum < roundgap)
-                {
-                    roundgap = target2 - twoSum;
-                    tmpres   = twoSum;
-                }
-                ++ head;
-            }
-            else if(twoSum > target2)
-            {
-                if(twoSum - target2 < roundgap)
-                {
-                    roundgap = twoSum - target2;
-                    tmpres   = twoSum;
-                }
-                -- tail;
-            }
+            int curDiff = target - (nums[i] + nums[l] + nums[r]);
+
+            if(std::abs(curDiff) < std::abs(minDiff))
+                minDiff = curDiff;
+
+            if(curDiff == 0)
+                break;
+            else if(curDiff > 0)
+                ++ l;
             else
-                return target;
-        }
-
-        if(std::abs(tmpres + nums[i] - target) < mingap)
-        {
-            mingap = abs(tmpres + nums[i] - target);
-            res    = tmpres + nums[i];
-            if(res == target)
-                return res;
+                -- r;
         }
     }
 
-    return res;
+    return target - minDiff;
 }
 
 int main()
 {
-    std::vector<int> iv{1,2,4,8,16,32,64,128};
-    int target = 82;
+    std::vector<int> iv{0, 0, 0};
+    int target = 1;
 
     int res = threeSumClosest(iv, target);
     std::cout<<res<<std::endl;
