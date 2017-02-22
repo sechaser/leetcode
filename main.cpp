@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <queue>
 
 struct ListNode
 {
@@ -65,16 +66,19 @@ struct ListNode
 //ListNode* merge2List(ListNode* list1, ListNode* list2);
 //ListNode* mergeKList(std::vector<ListNode*>& lists)
 //{
-//    int sz = lists.size();
-//    if(sz == 0)
+//    if(lists.size() == 0)
 //        return NULL;
 
-//    while(sz > 1)
+//    int end = lists.size() - 1;
+//    while(end > 0)
 //    {
-//        int k = (sz + 1)/2;
-//        for(int i = 0; i != sz/2; ++ i)
-//            lists[i] = merge2List(lists[i], lists[i+k]);
-//        sz = k;
+//        int beg = 0;
+//        while(beg < end)
+//        {
+//            lists[beg] = merge2List(lists[beg], lists[end]);
+//            ++ beg;
+//            -- end;
+//        }
 //    }
 
 //    return lists[0];
@@ -82,47 +86,67 @@ struct ListNode
 
 //ListNode* merge2List(ListNode* list1, ListNode* list2)
 //{
-//    ListNode* node = (ListNode*)malloc(sizeof(ListNode));
-//    node->next = NULL;
+//    ListNode* dummy = (ListNode*)malloc(sizeof(ListNode));
+//    dummy->next = NULL;
 //    ListNode* p = node;
 
-//    while(list1 != NULL && list2 != NULL)
+//    while(list1 && list2)
 //    {
 //        if(list1->val <= list2->val)
 //        {
 //            p->next = list1;
-//            list1   = list1->next;
+//            list1 = list1->next;
 //        }
 //        else
 //        {
 //            p->next = list2;
-//            list2   = list2->next;
+//            list2 = list2->next;
 //        }
-
 //        p = p->next;
 //    }
 
-//    while(list1 != NULL)
-//    {
-//        p->next = list1;
-//        list1   = list1->next;
-//        p       = p->next;
-//    }
+//    p->next = list1 ? list1 : list2;
 
-//    while(list2 != NULL)
-//    {
-//        p->next = list2;
-//        list2   = list2->next;
-//        p       = p->next;
-//    }
-
-//    if(list1 != NULL)
-//        p->next = list1;
-//    else
-//        p->next = list2;
-
-//    return node->next;
+//    return dummy->next;
 //}
+
+struct cmp
+{
+    bool operator()(const ListNode* l1, const ListNode* l2)
+    {
+        return l1->val > l2->val;
+    }
+};
+
+ListNode* mergeKList(std::vector<ListNode*>& lists)
+{
+    if(lists.size() == 0)
+        return NULL;
+
+    ListNode* dummy = (ListNode*)malloc(sizeof(ListNode));
+    ListNode* p = dummy;
+
+    std::priority_queue<ListNode*, std::vector<ListNode*>, cmp> pq;
+    for(int i = 0; i != lists.size(); ++ i)
+    {
+        if(lists[i])
+            pq.push(lists[i]);
+    }
+
+    while(!pq.empty())
+    {
+        ListNode* root = pq.top();
+        pq.pop();
+
+        p->next = root;
+        p = root;
+
+        if(root->next)
+            pq.push(root->next);
+    }
+
+    return dummy->next;
+}
 
 int main()
 {
