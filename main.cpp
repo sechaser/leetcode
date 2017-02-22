@@ -7,39 +7,26 @@
 
 void nextPermutation(std::vector<int>& nums)
 {
-    std::vector<int>::size_type nums_sz = nums.size();
+    if(nums.size() < 2)
+        return;
 
-    if(nums_sz > 1)
+    int i = nums.size() - 2;
+    while(i >= 0 && nums[i] >= nums[i+1])
+        -- i;
+
+    if(i < 0)
     {
-        int i;
-        bool flag = 0;
-        for(i = nums_sz - 1; i >= 1; -- i)
-        {
-            if(nums[i] <= nums[i - 1])
-                continue;
-            else
-            {
-                int minIndex = i;
-                int j;
-                for(j = i + 1; j != nums_sz; ++ j)
-                {
-                    if(nums[j] < nums[minIndex] && nums[j] > nums[i - 1])
-                        minIndex = j;
-                }
-
-                int temp = nums[i - 1];
-                nums[i - 1] = nums[minIndex];
-                nums[minIndex] = temp;
-                std::sort(nums.begin() + i, nums.end());
-
-                flag = 1;
-                break;
-            }
-        }
-
-        if(!flag)
-            std::sort(nums.begin(), nums.end());
+        std::sort(nums.begin(), nums.end());
+        return;
     }
+
+    int j = i + 1;
+    while(j < nums.size() && nums[j] > nums[i])
+        ++ j;
+    -- j;
+
+    std::swap(nums[i], nums[j]);
+    std::sort(nums.begin() + i + 1, nums.end());
 }
 
 
