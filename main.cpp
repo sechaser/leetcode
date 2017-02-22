@@ -23,19 +23,10 @@ int longestValidParentheses(std::string s)
                 indexSt.push(i);
             else
             {
-                if(indexSt.empty())
-                {
-                    std::cout<<"1.i = "<<i<<std::endl;
+                if(indexSt.empty() || s[indexSt.top()] != '(')
                     indexSt.push(i);
-                }
-                else if(!indexSt.empty() && s[indexSt.top()] != '(')
-                {
-                    std::cout<<"2.i = "<<i<<std::endl;
-                    indexSt.push(i);
-                }
                 else
                 {
-                    std::cout<<"3.i = "<<i<<std::endl;
                     indexSt.pop();
                     if(indexSt.empty())
                         templen = i + 1;
@@ -46,8 +37,6 @@ int longestValidParentheses(std::string s)
                         maxlen = templen;
                 }
             }
-
-            std::cout<<"i = "<<i<<" temp = "<<templen<<" max = "<<maxlen<<std::endl;
         }
 
         return maxlen;
