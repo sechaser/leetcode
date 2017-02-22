@@ -51,6 +51,7 @@ int search(std::vector<int>& nums, int target)
                 else
                     r = m - 1;
             }
+            /* may be : l == m*/
             else
                 ++ l;
         }
