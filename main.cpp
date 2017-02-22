@@ -6,16 +6,33 @@
 #include <iomanip>
 #include <iterator>
 
+//int removeDuplicates(std::vector<int>& nums)
+//{
+//    std::vector<int>::iterator it = std::unique(nums.begin(), nums.end());
+
+//    return (it-nums.begin());
+//}
+
 int removeDuplicates(std::vector<int>& nums)
 {
-    std::vector<int>::iterator it = std::unique(nums.begin(), nums.end());
+    if(nums.size() <= 1)
+        return nums.size();
 
-    return (it-nums.begin());
+    std::vector<int>::iterator it = nums.begin() + 1;
+    while(it != nums.end())
+    {
+        if(*it == *(it - 1))
+            it = nums.erase(it);
+        else
+            ++ it;
+    }
+
+    return nums.size();
 }
 
 int main()
 {
-    std::vector<int> iv{1, 1, 2, 3, 4, 5, 5};
+    std::vector<int> iv{1, 1, 1, 2, 3, 4, 5, 5};
     int res = removeDuplicates(iv);
 
     std::cout<<res<<std::endl;
