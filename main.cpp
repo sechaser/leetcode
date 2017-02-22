@@ -5,13 +5,39 @@
 #include <algorithm>
 #include <iomanip>
 
+//int strStr(std::string haystack, std::string needle)
+//{
+//    std::string::size_type index;
+//    if((index = haystack.find(needle)) != std::string::npos)
+//        return index;
+//    else
+//        return (-1);
+//}
+
 int strStr(std::string haystack, std::string needle)
 {
-    std::string::size_type index;
-    if((index = haystack.find(needle)) != std::string::npos)
-        return index;
-    else
-        return (-1);
+    if(needle.size() == 0)
+        return 0;
+    if(haystack.size() == 0)
+        return -1;
+
+    int m = haystack.size(), n = needle.size();
+    for(int i = 0; i <= (m-n); ++ i)
+    {
+        bool flag = 1;
+        for(int j = 0; j != n; ++ j)
+        {
+            if(haystack[i+j] != needle[j])
+            {
+                flag = 0;
+                break;
+            }
+        }
+        if(flag)
+            return i;
+    }
+
+    return -1;
 }
 
 int main()
