@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <iomanip>
 
-
+//O(logn)
 int searchInsert(std::vector<int>& nums, int target)
 {
     if(nums.empty())
@@ -34,6 +34,24 @@ int searchInsert(std::vector<int>& nums, int target)
         return l;
     }
 }
+
+
+//O(n)
+//int searchInsert(vector<int>& nums, int target) {
+//    if(nums.empty())
+//        return 0;
+
+//    int i = 0;
+//    while(i != nums.size())
+//    {
+//        if(target > nums[i])
+//            ++ i;
+//        else
+//            return i;
+//    }
+
+//    return nums.size();
+//}
 
 int main()
 {
