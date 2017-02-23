@@ -6,34 +6,6 @@
 #include <iomanip>
 
 
-//int jump(std::vector<int>& nums)
-//{
-//    if(nums.empty())
-//        return 0;
-
-//    size_t nums_sz = nums.size();
-//    int step = 0, prevStepDis = 0, currStepDis = 0;
-//    for(int i = 0; i != nums_sz; ++ i)
-//    {
-//        //If the current index exceed the farest distance with only "step", we should add a step and go far.
-//        if(i > prevStepDis)
-//        {
-//            prevStepDis = currStepDis;
-//            ++ step;
-//        }
-
-//        //Record the farest distance we can reach with "step+1".
-//        currStepDis = std::max(currStepDis, i + nums[i]);
-//    }
-
-
-//    return step;
-//}
-
-
-
-
-//This solution has considered that we can not reach the last index.
 int jump(std::vector<int>& nums)
 {
     if(nums.empty())
@@ -42,6 +14,9 @@ int jump(std::vector<int>& nums)
     size_t nums_sz = nums.size();
     int step = 0, lastArrive = 0, canArrive = 0;
 
+    /* lastArrive : step can arrive
+        canArrive : step + 1 can arrive
+     */
     for(int i = 0; i <= canArrive && i < nums_sz; ++ i)
     {
         if(i > lastArrive)
