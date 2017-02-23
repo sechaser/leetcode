@@ -15,34 +15,26 @@ struct Interval
     Interval(int s, int e) : start(s), end(e) {}
 };
 
-//*************************************Time:O(n), Space:O(n)*************************************
-//std::vector<Interval> merge(std::vector<Interval>& intervals)
-//{
-//    std::sort(intervals.begin(), intervals.end(), [](const Interval& lhs, const Interval& rhs){
-//        return lhs.start < rhs.start;
-//    });
+//*************************************Time:O(nlogn), Space:O(n)*************************************
+std::vector<Interval> merge(std::vector<Interval>& intervals)
+{
+    std::sort(intervals.begin(), intervals.end(), [](const Interval& lhs, const Interval& rhs){
+        return lhs.start < rhs.start;
+    });
 
-//    std::vector<Interval> res;
-//    for(std::vector<Interval>::size_type i = 0; i != intervals.size(); ++ i)
-//    {
-//        if(i == 0)
-//        {
-//            res.push_back(intervals[i]);
-//            continue;
-//        }
+    std::vector<Interval> res;
+    for(std::vector<Interval>::size_type i = 0; i != intervals.size(); ++ i)
+    {
+        if(res.empty() || res.back().end < intervals[i].start)
+            res.push_back(intervals[i]);
+        else
+            res.back().end = std::max(res.back().end, intervals[i].end);
+    }
 
-//        if(res[res.size() - 1].end < intervals[i].start)
-//            res.push_back(intervals[i]);
-//        else if(res[res.size() - 1].end >= intervals[i].start && res[res.size() - 1].end < intervals[i].end)
-//            res[res.size() - 1].end = intervals[i].end;
-//        else
-//            continue;
-//    }
+    return res;
+}
 
-//    return res;
-//}
-
-//*******************************************Time:O(n),space:O(1)*******************************
+//*******************************************Time:O(nlogn),space:O(1)*******************************
 std::vector<Interval> merge(std::vector<Interval>& intervals)
 {
     std::sort(intervals.begin(), intervals.end(), [](const Interval& lhs, const Interval& rhs){
