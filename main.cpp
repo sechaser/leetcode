@@ -21,46 +21,59 @@
 
 
 //*********************************************Method 2 **************************************************
+//double findKth(int a[], int m, int b[], int n, int k)
+//{
+//    if(m > n)
+//        return findKth(b, n, a, m, k);
+//    if(m == 0)
+//        return (double)b[k-1];
+//    if(k == 1)
+//    {
+//        if(a[0] > b[0])
+//            return (double)b[0];
+//        else
+//            return (double)a[0];
+//    }
+
+//    int pa, pb;
+//    if(k/2 > m)
+//        pa = m;       //"pa" is the index of after last element in array "a".
+//    else
+//        pa = k/2;     //"pa" is the index of median element in array "a".
+//    pb = k - pa;
+
+//    if(a[pa-1] < b[pb-1])
+//        return findKth(a + pa, m - pa, b, n, k - pa);
+//    else if(a[pa-1] > b[pb-1])
+//        return findKth(a, m, b + pb, n - pb, k - pb);
+//    else
+//        return (double)a[pa-1];
+//}
+
+
 double findKth(int a[], int m, int b[], int n, int k)
 {
-    if(m > n)
-        return findKth(b, n, a, m, k);
-    if(m == 0)
-        return (double)b[k-1];
-    if(k == 1)
+    if(m ==0)
+        return b[k-1];
+    if(n == 0)
+        return a[k-1];
+
+    int i = m/2, j = n/2;
+
+    if(a[i] <= b[j])
     {
-        if(a[0] > b[0])
-            return (double)b[0];
+        if(k > i + j + 1)
+            return findKth(a+i+1, m-i-1, b, n, k-i-1);
         else
-            return (double)a[0];
+            return findKth(a, m, b, j, k);
     }
-    int i;
-    std::cout<<"Array a : ";
-    for(i = 0; i != m; ++ i)
-        std::cout<<*(a + i)<<" ";
-    std::cout<<std::endl;
-
-    std::cout<<"Array b : ";
-    for(i = 0; i != n; ++ i)
-        std::cout<<*(b + i)<<" ";
-    std::cout<<std::endl;
-    std::cout<<"k = "<<k<<" ";
-
-    int pa, pb;
-    if(k/2 > m)
-        pa = m;       //"pa" is the index of after last element in array "a".
     else
-        pa = k/2;     //"pa" is the index of median element in array "a".
-    pb = k - pa;
-
-    std::cout<<"pa = "<<pa<<" pb = "<<pb<<std::endl;
-
-    if(a[pa-1] < b[pb-1])
-        return findKth(a + pa, m - pa, b, n, k - pa);
-    else if(a[pa-1] > b[pb-1])
-        return findKth(a, m, b + pb, n - pb, k - pb);
-    else
-        return (double)a[pa-1];
+    {
+        if(k > i + j + 1)
+            return findKth(a, m, b+j+1, n-j-1, k-j-1);
+        else
+            return findKth(a, i, b, n, k);
+    }
 }
 
 
