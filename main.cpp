@@ -5,32 +5,32 @@
 #include <algorithm>
 #include <iomanip>
 
-//**************************************Method 1*************************************
-//void solver(int& res, int row, int col)
-//{
-//    if(row == 0 && col == 0)
-//    {
-//        ++ res;
-//        return;
-//    }
+//**************************************Method 1: Time limit exceed*************************************
+void solver(int& res, int row, int col)
+{
+    if(row == 0 && col == 0)
+    {
+        ++ res;
+        return;
+    }
 
-//    if(row > 0)
-//        solver(res, row - 1, col);
+    if(row > 0)
+        solver(res, row - 1, col);
 
-//    if(col > 0)
-//        solver(res, row, col - 1);
-//}
+    if(col > 0)
+        solver(res, row, col - 1);
+}
 
 
-//int uniquePaths(int m, int n)
-//{
-//    int res = 0;
-//    solver(res, m - 1, n - 1);
+int uniquePaths(int m, int n)
+{
+    int res = 0;
+    solver(res, m - 1, n - 1);
 
-//    return res;
-//}
+    return res;
+}
 
-//*******************************Method 2********************************
+//*******************************Method 2: Time limit exceed********************************
 //int uniquePaths(int m, int n)
 //{
 //    if(m == 1 || n == 1)
@@ -67,26 +67,26 @@
 
 
 //**************************************combination****************************|
-int uniquePaths(int m, int n)
-{
-    double fenzi = 1;
-    double fenmu = 1;
+//int uniquePaths(int m, int n)
+//{
+//    double fenzi = 1;
+//    double fenmu = 1;
 
-    int small = m < n ? m-1 : n-1;
-    int big   = m < n ? n-1 : m-1;
+//    int small = m < n ? m-1 : n-1;
+//    int big   = m < n ? n-1 : m-1;
 
-    for(int i = 1; i <= small; ++ i)
-    {
-        fenmu *= i;
-        fenzi *= small + big + 1 - i;
-    }
+//    for(int i = 1; i <= small; ++ i)
+//    {
+//        fenmu *= i;
+//        fenzi *= small + big + 1 - i;
+//    }
 
-    return (int)(fenzi/fenmu);
-}
+//    return (int)(fenzi/fenmu);
+//}
 
 int main()
 {
-    std::cout<<uniquePaths(23, 12)<<std::endl;
+    std::cout<<uniquePaths(2, 2)<<std::endl;
 
     system("pause");
     return 0;
