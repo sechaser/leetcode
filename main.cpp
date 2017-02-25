@@ -6,25 +6,27 @@
 #include <iomanip>
 
 //二分法
-//int mySqrt(int x)
-//{
-//    long long l = 0, r = x/2 + 1;
-//    long long m;
+int mySqrt(int x)
+{
+    if(x <= 0)
+        return 0;
+    int l = 0, r = x/2 + 1;
+    long long m;
 
-//    while(l <= r)
-//    {
-//        m = (l + r) / 2;
+    while(l <= r)
+    {
+        m = (l + r) / 2;
 
-//        if(m * m  == x)
-//            return m;
-//        else if(m * m < x)
-//            l = m + 1;
-//        else
-//            r = m - 1;
-//    }
+        if(m * m  == x)
+            return m;
+        else if(m * m < x)
+            l = m + 1;
+        else
+            r = m - 1;
+    }
 
-//    return r;
-//}
+    return r;
+}
 
 //牛顿法
 int mySqrt(int x)
