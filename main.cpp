@@ -18,11 +18,11 @@ ListNode* partition(ListNode* head, int x)
         return head;
 
     ListNode* small_head = (ListNode*)malloc(sizeof(ListNode));
-    small_head->next = NULL;
+    //small_head->next = NULL;
     ListNode* sp = small_head;
 
     ListNode* large_head = (ListNode*)malloc(sizeof(ListNode));
-    large_head->next = NULL;
+    //large_head->next = NULL;
     ListNode* lp = large_head;
 
     while(head != NULL)
@@ -53,10 +53,10 @@ ListNode* partition(ListNode* head, int x)
 int main()
 {
     ListNode* node, *p, *lis1;
-    for(int i = 0; i != 5; ++ i)
+    for(int i = 0; i != 2; ++ i)
     {
         node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = 5 - i;
+        node->val  = i+1;
         node->next = NULL;
 
         if(i == 0)
@@ -71,7 +71,7 @@ int main()
         }
     }
 
-    p = partition(lis1, 9);
+    p = partition(lis1, 3);
     while(p != NULL)
     {
         std::cout<<std::setw(4)<<p->val;
