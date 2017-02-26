@@ -57,6 +57,32 @@ bool isInterleave(std::string s1, std::string s2, std::string s3)
 }
 
 
+/* Method 2 : Time limit exceed */
+//bool solver(std::string& s1, int end1, std::string& s2, int end2, std::string& s3, int end3)
+//{
+//    if(end1 == -1 && end2 == -1)
+//    {
+//        if(end3 == -1)
+//            return true;
+//        else
+//            return false;
+//    }
+
+//    if(end1 >= 0 && s1[end1] == s3[end3] && solver(s1, end1-1, s2, end2, s3, end3-1))
+//        return true;
+
+//    if(end2 >= 0 && s2[end2] == s3[end3] && solver(s1, end1, s2, end2-1, s3, end3-1))
+//        return true;
+
+//    return false;
+//}
+
+//bool isInterleave(std::string s1, std::string s2, std::string s3)
+//{
+//    return solver(s1, s1.length()-1, s2, s2.length()-1, s3, s3.length()-1);
+//}
+
+
 int main()
 {
     std::string s1 = "ca", s2 = "db", s3 = "cdba";
