@@ -6,68 +6,120 @@
 #include <iomanip>
 #include <unordered_map>
 
+//std::string minWindow(std::string s, std::string t)
+//{
+//    std::string::size_type ssz = s.size(), tsz = t.size();
+
+//    //Record occurrences of every character in string "t".
+//    std::unordered_map<char, int> Tcount;
+//    for(std::string::size_type i = 0; i != tsz; ++ i)
+//        ++ Tcount[t[i]];
+
+//    //Record the minmum window conclude string "t"
+//    int winStart = -1, winEnd = ssz;
+
+//    //Record occurrences of every character in string "t" in window [beg, end]
+//    std::unordered_map<char, int> foundCount;
+
+//    //Record the number of characters in "t" we have found so far
+//    int counter = 0;
+
+//    for(int beg = 0, end = 0; end != ssz; ++ end)
+//    {
+//        //This character has occurred in string "t".
+//        if(Tcount[s[end]] != 0)
+//        {
+//            ++ foundCount[s[end]];
+
+//            //Find a character
+//            if(foundCount[s[end]] <= Tcount[s[end]])
+//                ++ counter;
+
+//            //Find a window include "t"
+//            if(counter == tsz)
+//            {
+//                while(Tcount[s[beg]] == 0 || foundCount[s[beg]] > Tcount[s[beg]])
+//                {
+//                    //Belong to the second solution "foundCount[s[beg]] > Tcount[s[beg]]"
+//                    if(Tcount[s[beg]] != 0)
+//                        -- foundCount[s[beg]];
+
+//                    ++ beg;
+//                }
+
+//                //Update the minmum window
+//                if(winEnd - winStart > end - beg)
+//                {
+//                    winStart = beg;
+//                    winEnd   = end;
+//                }
+
+//                -- foundCount[s[beg]];
+//                ++ beg;
+//                -- counter;
+//            }
+//        }
+//    }
+
+//    return winStart == (-1) ?  "" : s.substr(winStart, winEnd - winStart + 1);
+//}
+
+
 std::string minWindow(std::string s, std::string t)
 {
-    std::string::size_type ssz = s.size(), tsz = t.size();
-
-    //Record occurrences of every character in string "t".
     std::unordered_map<char, int> Tcount;
-    for(std::string::size_type i = 0; i != tsz; ++ i)
+    for(std::string::size_type i = 0; i != t.size(); ++ i)
         ++ Tcount[t[i]];
 
-    //Record the minmum window conclude string "t"
-    int winStart = -1, winEnd = ssz;
-
-    //Record occurrences of every character in string "t" in window [beg, end]
+    int min_start = 0, min_end = s.size() - 1;
     std::unordered_map<char, int> foundCount;
 
-    //Record the number of characters in "t" we have found so far
+    int cur_start = 0;
     int counter = 0;
+    bool foundFlag = 0;
 
-    for(int beg = 0, end = 0; end != ssz; ++ end)
+    for(int cur_end = 0; cur_end != s.size(); ++ cur_end)
     {
-        //This character has occurred in string "t".
-        if(Tcount[s[end]] != 0)
+        if(Tcount[s[cur_end]] != 0)
         {
-            ++ foundCount[s[end]];
+            ++ foundCount[s[cur_end]];
 
-            //Find a character
-            if(foundCount[s[end]] <= Tcount[s[end]])
+            if(foundCount[s[cur_end]] <= Tcount[s[cur_end]])
                 ++ counter;
 
-            //Find a window include "t"
-            if(counter == tsz)
+            if(counter == t.size())
             {
-                while(Tcount[s[beg]] == 0 || foundCount[s[beg]] > Tcount[s[beg]])
+                foundFlag = 1;
+                while(Tcount[s[cur_start]] == 0 || foundCount[s[cur_start]] > Tcount[s[cur_start]])
                 {
-                    //Belong to the second solution "foundCount[s[beg]] > Tcount[s[beg]]"
-                    if(Tcount[s[beg]] != 0)
-                        -- foundCount[s[beg]];
-
-                    ++ beg;
+                    if(Tcount[s[cur_start]] != 0)
+                        --foundCount[s[cur_start]];
+                    ++ cur_start;
                 }
 
-                //Update the minmum window
-                if(winEnd - winStart > end - beg)
+                if(min_end - min_start > cur_end - cur_start)
                 {
-                    winStart = beg;
-                    winEnd   = end;
+                    min_end   = cur_end;
+                    min_start = cur_start;
                 }
 
-                -- foundCount[s[beg]];
-                ++ beg;
+                -- foundCount[s[cur_start]];
+                ++ cur_start;
                 -- counter;
             }
         }
     }
 
-    return winStart == (-1) ?  "" : s.substr(winStart, winEnd - winStart + 1);
+    std::string res;
+    if(foundFlag)
+        res = s.substr(min_start, min_end - min_start + 1);
+    return res;
 }
 
 
 int main()
 {
-    std::string s = "ADOBECODEBANC", t = "ABC";
+    std::string s = "a", t = "aa";
     std::string res = minWindow(s, t);
     std::cout<<res<<std::endl;
 
