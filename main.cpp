@@ -45,32 +45,49 @@ struct TreeNode
 
 
 //*************************Method 2****************************
+//bool isValidBST(TreeNode* root)
+//{
+//    std::stack<TreeNode*> S;
+//    TreeNode* pre = NULL, *p = root;
+
+//    while(p || !S.empty())
+//    {
+//        while(p)
+//        {
+//            S.push(p);
+//            p = p->left;
+//        }
+
+//        if(!S.empty())
+//        {
+//            p = S.top();
+//            S.pop();
+
+//            if(pre && p->val <= pre->val)
+//                return false;
+//            pre = p;
+//            p = p->right;
+//        }
+//    }
+
+//    return true;
+//}
+
+//Method 3
+bool isValidBST(TreeNode *root, TreeNode* minNode, TreeNode* maxNode)
+{
+    if(!root)
+        return true;
+
+    if((minNode && root->val <= minNode->val) || (maxNode && root->val >= maxNode));
+        return false;
+
+    return isValidBST(root->left, minNode, root) && isValidBST(root->right, root, maxNode);
+}
+
 bool isValidBST(TreeNode* root)
 {
-    std::stack<TreeNode*> S;
-    TreeNode* pre = NULL, *p = root;
-
-    while(p || !S.empty())
-    {
-        while(p)
-        {
-            S.push(p);
-            p = p->left;
-        }
-
-        if(!S.empty())
-        {
-            p = S.top();
-            S.pop();
-
-            if(pre && p->val <= pre->val)
-                return false;
-            pre = p;
-            p = p->right;
-        }
-    }
-
-    return true;
+    return isValidBST(root, NULL, NULL);
 }
 
 
