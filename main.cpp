@@ -40,42 +40,62 @@ struct TreeNode
 //}
 
 
+//bool isSymmetric(TreeNode* root)
+//{
+//    if(root == NULL)
+//        return true;
+
+//    std::queue<TreeNode*> ql, qr;
+//    ql.push(root->left);
+//    qr.push(root->right);
+
+//    while(!ql.empty() && !qr.empty())
+//    {
+//        TreeNode* lnode = ql.front();
+//        TreeNode* rnode = qr.front();
+
+//        ql.pop();
+//        qr.pop();
+
+//        if(lnode == NULL && rnode == NULL)
+//            continue;
+
+//        if(lnode == NULL || rnode == NULL)
+//            return false;
+//        if(lnode->val != rnode->val)
+//            return false;
+
+//        ql.push(lnode->left);
+//        ql.push(lnode->right);
+
+//        qr.push(rnode->right);
+//        qr.push(rnode->left);
+//    }
+
+//    if(!ql.empty() || !qr.empty())
+//        return false;
+
+//    return true;
+//}
+
+bool solver(TreeNode* ltree, TreeNode* rtree)
+{
+    if(!ltree && !rtree)
+        return true;
+
+    if(ltree && rtree && (ltree->val == rtree->val))
+        return solver(ltree->left, rtree->right) && solver(ltree->right, rtree->left);
+
+    return false;
+
+}
+
 bool isSymmetric(TreeNode* root)
 {
     if(root == NULL)
-        return true;
-
-    std::queue<TreeNode*> ql, qr;
-    ql.push(root->left);
-    qr.push(root->right);
-
-    while(!ql.empty() && !qr.empty())
-    {
-        TreeNode* lnode = ql.front();
-        TreeNode* rnode = qr.front();
-
-        ql.pop();
-        qr.pop();
-
-        if(lnode == NULL && rnode == NULL)
-            continue;
-
-        if(lnode == NULL || rnode == NULL)
-            return false;
-        if(lnode->val != rnode->val)
-            return false;
-
-        ql.push(lnode->left);
-        ql.push(lnode->right);
-
-        qr.push(rnode->right);
-        qr.push(rnode->left);
-    }
-
-    if(!ql.empty() || !qr.empty())
         return false;
 
-    return true;
+    return solver(root->left, root->right);
 }
 
 int main()
