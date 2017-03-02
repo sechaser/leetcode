@@ -17,35 +17,86 @@ struct TreeLinkNode
     TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL){}
 };
 
+//void connect(TreeLinkNode* root)
+//{
+//    if(root == NULL)
+//        return;
+
+//    std::queue<TreeLinkNode*> qnode;
+//    qnode.push(root);
+//    qnode.push(NULL);   //The gap between every level
+
+//    TreeLinkNode* pre = NULL;
+//    while(!qnode.empty())
+//    {
+//        TreeLinkNode* cur = qnode.front();
+//        qnode.pop();
+
+//        if(cur != NULL)
+//        {
+//            if(cur->left)
+//                qnode.push(cur->left);
+//            if(cur->right)
+//                qnode.push(cur->right);
+//        }
+//        else if(!qnode.empty())
+//            qnode.push(NULL);
+
+//        if(pre != NULL)
+//            pre->next = cur;
+
+//        pre = cur;
+//    }
+//}
+
+
 void connect(TreeLinkNode* root)
 {
-    if(root == NULL)
-        return;
+    /*
+     * head: The left most element at next level
+     * tail: The right most element at next level
+     * now : Current level traveler */
+    TreeLinkNode* now, *tail, *head;
 
-    std::queue<TreeLinkNode*> qnode;
-    qnode.push(root);
-    qnode.push(NULL);   //The gap between every level
+    now = root;
+    head = tail = NULL;
 
-    TreeLinkNode* pre = NULL;
-    while(!qnode.empty())
+    while(now)
     {
-        TreeLinkNode* cur = qnode.front();
-        qnode.pop();
-
-        if(cur != NULL)
+        if(now->left)
         {
-            if(cur->left)
-                qnode.push(cur->left);
-            if(cur->right)
-                qnode.push(cur->right);
+            if(tail)
+            {
+                tail->next = now->left;
+                tail = tail->next;
+            }
+            else
+            {
+                tail = now->left;
+                head = tail;
+            }
         }
-        else if(!qnode.empty())
-            qnode.push(NULL);
 
-        if(pre != NULL)
-            pre->next = cur;
+        if(now->right)
+        {
+            if(tail)
+            {
+                tail->next = now->right;
+                tail = tail->next;
+            }
+            else
+            {
+                tail = now->right;
+                head = tail;
+            }
+        }
 
-        pre = cur;
+        now = now->next;
+        if(!now)
+        {
+            now = head;
+            head = tail = NULL;
+        }
     }
 }
 
