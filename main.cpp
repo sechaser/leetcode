@@ -13,9 +13,27 @@ struct ListNode
 };
 
 
+bool hasCycle(ListNode* head)
+{
+    if(!head)
+        return false;
+    ListNode* fast = head, *low = head;
+
+    do
+    {
+        if((!fast->next) || (!fast->next->next))
+            return false;
+
+        fast = fast->next->next;
+        low = low->next;
+    }while(low != fast);
+
+    return true;
+}
+
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
+    ListNode* node, *p, *lis1;
     for(int i = 0; i != 5; ++ i)
     {
         node = (ListNode*)malloc(sizeof(ListNode));
@@ -33,43 +51,9 @@ int main()
             p       = node;
         }
     }
+    p->next = lis1;
 
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
+    std::cout<<hasCycle(lis1)<<std::endl;
 
 
     system("pause");
