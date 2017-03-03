@@ -5,72 +5,33 @@
 #include <algorithm>
 #include <iomanip>
 
-struct ListNode
+bool wordBreak(std::string s, std::vector<std::string>& wordDict)
 {
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
-};
+    std::vector<bool> dp(s.size(), 0);
+    dp[0] = 1;
+
+    for(std::string::size_type i = 0; i != s.size(); ++ i)
+    {
+        for(int j = i; j >= 0; -- j)
+        {
+            if(dp[j] && (std::find(wordDict.begin(), wordDict.end(), s.substr(j, i-j+1)) != wordDict.end()))
+            {
+                dp[i+1] = 1;
+                break;
+            }
+        }
+    }
+
+    return dp[s.size()];
+}
 
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
+    std::vector<std::string> wordDict = {"leet", "code"};
+    std::string s = "leetcode";
 
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::cout<<wordBreak(s, wordDict)<<std::endl;
 
     system("pause");
     return 0;
