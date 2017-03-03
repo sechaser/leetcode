@@ -13,6 +13,32 @@ struct ListNode
 };
 
 
+ListNode* detectCycle(ListNode* head)
+{
+    if(!head)
+        return NULL;
+
+    ListNode* fast = head, *low = head;
+    do
+    {
+        if((!fast->next) || (!fast->next->next))
+            return NULL;
+        fast = fast->next->next;
+        low  = low->next;
+    }while(low != fast);
+
+    low = head;
+
+    while(low != fast)
+    {
+        low  = low->next;
+        fast = fast->next;
+    }
+
+    return low;
+}
+
+
 int main()
 {
     ListNode* node, *p, *lis1, *lis2, *lis3;
