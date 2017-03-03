@@ -4,13 +4,47 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <unordered_map>
+#include <queue>
 
-struct ListNode
-{
-    int val;
-    ListNode* next;
-    ListNode(int x):val(x), next(NULL) {}
+struct RandomListNode {
+    int label;
+    RandomListNode *next, *random;
+    RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
 };
+
+RandomListNode* copyRandomList(RandomListNode* head)
+{
+    if(!head)
+        return head;
+    std::unordered_map<RandomListNode*, RandomListNode*> ht;
+    RandomListNode* p2 =  new RandomListNode(head->val);
+    ht[head] = p2;
+
+    std::queue<RandomListNode*> q;
+    q.push(head);
+
+    while(!q.empty())
+    {
+        RandomListNode* p1 = q.front();
+        p2 = ht[p1];
+        q.pop();
+
+        if(p1->next)
+        {
+            if(ht.count(p1->next))
+                p2->next = ht[p1->next];
+            else
+            {
+                RandomListNode* newNode = new RandomListNode(p1->next->label);
+                ht[p1->next] = newNode;
+                p2->next = newNode;
+            }
+        }
+    }
+
+    return ht[head];
+}
 
 
 int main()
