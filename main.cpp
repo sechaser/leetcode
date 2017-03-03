@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <stack>
 
 struct TreeNode
 {
@@ -15,20 +16,27 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
-{
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
-
-std::vector<int> inorderTraversal(TreeNode* root)
-{
+std::vector<int> preorderTraversal(TreeNode* root) {
+    std::stack<TreeNode*> stk;
     std::vector<int> res;
-    solver(res, root);
+
+    while(root || !stk.empty())
+    {
+        if(root)
+        {
+            stk.push(root);
+            res.push_back(root->val);
+            root = root->left;
+        }
+        else
+        {
+            root = stk.top();
+            stk.pop();
+            root = root->right;
+        }
+    }
+
+
     return res;
 }
 
@@ -55,11 +63,6 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
 
     system("pause");
     return 0;
