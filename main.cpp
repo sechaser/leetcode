@@ -39,6 +39,20 @@ RandomListNode* copyRandomList(RandomListNode* head)
                 RandomListNode* newNode = new RandomListNode(p1->next->label);
                 ht[p1->next] = newNode;
                 p2->next = newNode;
+                q.push(p1->next);
+            }
+        }
+
+        if(p1->random)
+        {
+            if(ht.count(p1->random))
+                p2->random = ht[p1->random];
+            else
+            {
+                RandomListNode* newNode = new RandomListNode(p1->random->label);
+                ht[p1->random] = newNode;
+                p2->random = newNode;
+                q.push(p1->random);
             }
         }
     }
