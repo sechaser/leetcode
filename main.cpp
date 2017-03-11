@@ -12,6 +12,54 @@ struct ListNode
     ListNode(int x):val(x), next(NULL) {}
 };
 
+ListNode* sortList(ListNode* head)
+{
+    if(head == NULL || head->next == NULL)
+        return head;
+
+    ListNode* fast = head, *slow = head;
+    while(fast->next != NULL && fast->next->next != NULL)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+
+    fast = slow->next;
+    slow ->next = NULL;
+
+    slow = sortList(head);
+    fast = sortList(fast);
+
+    return mergeList(slow, fast);
+}
+
+ListNode* mergeList(ListNode* head1, ListNode* head2)
+{
+    ListNode* dummy = new ListNode(0);
+    ListNode* p = dummy;
+
+    while(head1 && head2)
+    {
+        if(head1->val <= head2->val)
+        {
+            p->next = head1;
+            head1 = head1->next;
+        }
+        else
+        {
+            p->next = head2;
+            head2 = head2->next;
+        }
+        p = p->next;
+    }
+
+    if(head1)
+        p->next = head1;
+    if(head2)
+        p->next = head2;
+
+    return dummy->next;
+}
 
 int main()
 {
