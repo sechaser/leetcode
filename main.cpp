@@ -13,22 +13,43 @@ struct ListNode
 };
 
 
-bool hasCycle(ListNode* head)
+//bool hasCycle(ListNode* head)
+//{
+//    if(!head)
+//        return false;
+//    ListNode* fast = head, *low = head;
+
+//    do
+//    {
+//        if((!fast->next) || (!fast->next->next))
+//            return false;
+
+//        fast = fast->next->next;
+//        low = low->next;
+//    }while(low != fast);
+
+//    return true;
+//}
+
+
+bool hasCycle(ListNode *head)
 {
-    if(!head)
-        return false;
-    ListNode* fast = head, *low = head;
+    ListNode* fast = head;
+    ListNode* slow = head;
 
-    do
+    while(fast)
     {
-        if((!fast->next) || (!fast->next->next))
-            return false;
+        fast = fast->next;
+        slow = slow->next;
 
-        fast = fast->next->next;
-        low = low->next;
-    }while(low != fast);
+        if(fast)
+            fast = fast->next;
 
-    return true;
+        if(fast && slow == fast)
+            return true;
+    }
+
+    return false;
 }
 
 int main()
