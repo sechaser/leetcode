@@ -15,20 +15,32 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
-{
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
-
-std::vector<int> inorderTraversal(TreeNode* root)
-{
+vector<int> postorderTraversal(TreeNode* root) {
+    std::stack<TreeNode*> stk;
     std::vector<int> res;
-    solver(res, root);
+    TreeNode* pre = NULL;
+
+    while(root || !stk.empty())
+    {
+        if(root)
+        {
+            stk.push(root);
+            root = root->left;
+        }
+        else
+        {
+            TreeNode* topNode = stk.top();
+            if(topNode->right != NULL && pre != topNode->right)
+                root = topNode->right;
+            else
+            {
+                stk.pop();
+                res.push_back(topNode->val);
+                pre = topNode;
+            }
+        }
+    }
+
     return res;
 }
 
