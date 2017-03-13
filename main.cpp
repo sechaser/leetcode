@@ -128,9 +128,6 @@ void twoSum(std::vector<int>& nums, int beg, int end, int target, std::vector<in
 void kSum(std::vector<int>& nums, int beg, int end, int target, int k, std::vector<int>& tmp,
           std::vector<std::vector<int> >& res)
 {
-    if(k == 0)
-        return;
-
     if(k == 1)
     {
         for(int i = beg; i <= end; ++ i)
@@ -143,13 +140,15 @@ void kSum(std::vector<int>& nums, int beg, int end, int target, int k, std::vect
                 return;
             }
         }
+        return;  /* May not found the target, return too*/
     }
 
-    if(k == 2)
-    {
-        twoSum(nums, beg, end, target, tmp, res);
-        return;
-    }
+    /* Time will exceed if not add this*/
+//    if(k == 2)
+//    {
+//        twoSum(nums, beg, end, target, tmp, res);
+//        return;
+//    }
 
     for(int i = beg; i <= end-k+1; ++ i)
     {
@@ -178,7 +177,7 @@ std::vector<std::vector<int> > fourSum(std::vector<int>& nums, int target)
 
 int main()
 {
-    std::vector<int> s{1, 0, -1, 0, -2, 2};
+    std::vector<int> s{1, -1, -2, 2, 0};
     int target = 0;
 
     std::vector<std::vector<int> > res = fourSum(s, target);
