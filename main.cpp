@@ -13,6 +13,7 @@ struct ListNode
 };
 
 
+
 ListNode* removeElements(ListNode* head, int val)
 {
     if(head == NULL)
