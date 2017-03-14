@@ -12,7 +12,26 @@ struct ListNode
     ListNode(int x):val(x), next(NULL) {}
 };
 
+ListNode* reverseList(ListNode* head)
+{
+    if(!head || head->next == NULL)
+        return head;
 
+    ListNode* dummy = new ListNode(0);
+    dummy->next = head;
+    ListNode* pre = dummy, *cur = head, *next = head->next;
+
+    while(next)
+    {
+        cur->next = next->next;
+        next->next = pre->next;
+        pre->next = next;
+
+        next = cur->next;
+    }
+
+    return dummy->next;
+}
 int main()
 {
     ListNode* node, *p, *lis1, *lis2, *lis3;
