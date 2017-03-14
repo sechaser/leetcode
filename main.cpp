@@ -13,6 +13,15 @@ struct ListNode
 };
 
 
+void deleteNode(ListNode* node)
+{
+    if(node == NULL || node->next == NULL)
+        return;
+
+    node->val = node->next->val;
+    node->next = node->next->next;
+}
+
 int main()
 {
     ListNode* node, *p, *lis1, *lis2, *lis3;
