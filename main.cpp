@@ -13,6 +13,33 @@ struct ListNode
 };
 
 
+ListNode* removeElements(ListNode* head, int val)
+{
+    if(head == NULL)
+        return head;
+
+    ListNode* dummy = new ListNode(0);
+    dummy->next = head;
+
+    ListNode* pre = dummy, *cur = head;
+
+    while(cur)
+    {
+        if(cur->val == val)
+        {
+            pre->next = cur->next;
+            cur = cur->next;
+        }
+        else
+        {
+            pre = cur;
+            cur = cur->next;
+        }
+    }
+
+    return dummy->next;
+}
+
 int main()
 {
     ListNode* node, *p, *lis1, *lis2, *lis3;
