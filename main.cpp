@@ -12,65 +12,61 @@ struct ListNode
     ListNode(int x):val(x), next(NULL) {}
 };
 
+std::string reverseStr(std::string s, int k)
+{
+    if(s.empty())
+        return s;
+
+    if(s.size() <= k)
+    {
+        std::reverse(s.begin(), s.end());
+        return s;
+    }
+
+    int group = s.size() / (k * 2);
+    for(int i = 0; i != group; ++ i)
+    {
+        int left = i * 2 * k, right = i * 2 * k + k - 1;
+        while(left < right)
+        {
+            char ch = s[left];
+            s[left] = s[right];
+            s[right] = ch;
+
+            -- right;
+            ++ left;
+        }
+    }
+
+    int left, right;
+    if(s.size() - group * 2 * k <= k)
+    {
+        left = group * 2 * k;
+        right = s.size() - 1;
+    }
+    else
+    {
+        left  = group * 2 * k;
+        right = group * 2 * k + k - 1;
+    }
+
+    while(left < right)
+    {
+        char ch = s[left];
+        s[left] = s[right];
+        s[right] = ch;
+
+        -- right;
+        ++ left;
+    }
+
+    return s;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::string s = "hyzqyljrnigxvdtneasepfahmtyhlohwxmkqcdfehybknvdmfrfvtbsovjbdhevlfxpdaovjgunjqlimjkfnqcqnajmebeddqsgl";
+    std::string res = reverseStr(s, 39);
 
     system("pause");
     return 0;
