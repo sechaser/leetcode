@@ -15,30 +15,25 @@ struct ListNode
 
 ListNode* swapPairs(ListNode* head)
 {
-    if(head == NULL)
-        return NULL;
+    if(!head)
+        return head;
 
-    ListNode* node = new ListNode(0);
-    node->next = head;
-    ListNode* pre = node;
-    ListNode* cur = head;
+    ListNode* dummy = new ListNode(0);
+    dummy->next = head;
 
-    while(cur != NULL && cur->next != NULL)
+    ListNode* pre = dummy, *cur = head;
+
+    while(cur && cur->next)
     {
-        ListNode* next = cur->next->next;
-        cur->next->next = cur;
         pre->next = cur->next;
-
-        if(next != NULL && next->next != NULL)
-            cur->next = next->next;
-        else
-            cur->next = next;
+        cur->next = cur->next->next;
+        pre->next->next = cur;
 
         pre = cur;
-        cur = next;
+        cur = cur->next;
     }
 
-    return node->next;
+    return dummy->next;
 }
 
 int main()
