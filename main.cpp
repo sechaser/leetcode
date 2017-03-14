@@ -32,6 +32,26 @@ ListNode* reverseList(ListNode* head)
 
     return dummy->next;
 }
+
+ListNode* reverseList(ListNode* head) {
+    if(!head || head->next == NULL)
+        return head;
+
+    ListNode* pre = head, *cur = head->next;
+
+    while(cur)
+    {
+        ListNode* next = cur->next;
+        cur->next = pre;
+
+        pre = cur;
+        cur = next;
+    }
+
+    head->next = NULL;
+
+    return pre;
+}
 int main()
 {
     ListNode* node, *p, *lis1, *lis2, *lis3;
