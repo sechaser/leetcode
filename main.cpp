@@ -18,9 +18,7 @@ ListNode* findMid(ListNode* head)
 
     while(fast && fast->next)
     {
-        fast = fast->next;
-        if(fast->next)
-            fast = fast->next;
+        fast = fast->next->next;
         low = low->next;
     }
 
@@ -58,7 +56,7 @@ void reorderList(ListNode* head)
     {
         ListNode* leftNext  = left->next;
         ListNode* rightNext = right->next;
-        left->next = right;
+        left->next  = right;
         right->next = leftNext;
         left  = leftNext;
         right = rightNext;
