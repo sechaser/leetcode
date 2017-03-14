@@ -13,31 +13,34 @@ struct ListNode
 };
 
 
-ListNode* detectCycle(ListNode* head)
+ListNode *detectCycle(ListNode *head)
 {
     if(!head)
         return NULL;
 
     ListNode* fast = head, *low = head;
-    do
+    bool flag = 0;
+    while(fast && fast->next)
     {
-        if((!fast->next) || (!fast->next->next))
-            return NULL;
         fast = fast->next->next;
         low  = low->next;
-    }while(low != fast);
 
-    low = head;
-
-    while(low != fast)
-    {
-        low  = low->next;
-        fast = fast->next;
+        if(fast && fast == low)
+        {
+            flag = 1;
+            break;
+        }
     }
 
-    return low;
-}
+    if(flag)
+    {
+        for(fast = head; fast != low; fast = fast->next)
+            low = low->next;
 
+        return low;
+    }
+    return NULL;
+}
 
 int main()
 {
