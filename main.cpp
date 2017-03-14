@@ -12,6 +12,54 @@ struct ListNode
     ListNode(int x):val(x), next(NULL) {}
 };
 
+ListNode* reverseList(ListNode* head)
+{
+    if(head == NULL || head->next == NULL)
+        return head;
+
+    ListNode* dummy = new ListNode(0);
+    dummy->next = head;
+
+    ListNode* pre = dummy, *cur = head, *next = head->next;
+    while(next)
+    {
+        cur->next = next->next;
+        next->next = pre->next;
+        pre->next = cur;
+
+        next = cur->next;
+    }
+
+    return dummy->next;
+}
+
+bool isPalindrome(ListNode* head)
+{
+    if(head == NULL || head->next == NULL)
+        return true;
+
+    ListNode* slow = head, *fast = head;
+    while(fast && fast->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+
+    ListNode* right = reverseList(slow);
+    ListNode* left = head;
+
+    while(left && right && (left->val == right->val))
+    {
+        right = right->next;
+        left  = left->next;
+    }
+
+    if(left == NULL || right == NULL)
+        return true;
+
+    return false;
+}
+
 
 int main()
 {
