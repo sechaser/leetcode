@@ -7,13 +7,10 @@
 
 bool isValid(std::string str)
 {
-    if(str.empty() || str.size() > 3)
+    if(str[0] == '0' && str.size() > 1)
         return false;
 
-    if(str[0] == '0' && str.size() != 1)
-        return false;
-
-    if(str.size() == 3 && std::stoi(str) > 255)
+    if(std::stoi(str) > 255)
         return false;
 
     return true;
