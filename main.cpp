@@ -57,46 +57,45 @@
 //    return res;
 //}
 
-
-//************************************Method 2********************************
 std::string countAndSay(int n)
 {
-    if(n < 1)
+    if(n <= 0)
         return "";
-    std::string prev = "1";
 
+    std::string res = "1";
+    int count = 0;
+    char ch;
     for(int i = 2; i <= n; ++ i)
     {
-        char curChar = prev[0];
-        int times = 1;
-        std::string tmpstr;
-        prev.push_back('#');
+        std::string tmp;
+        ch = res[0];
+        count = 1;
 
-        for(int k = 1; k < prev.size(); ++ k)
+        for(int j = 1; j != res.size(); ++ j)
         {
-            if(prev[k] == curChar)
-                ++ times;
+            if(res[j] == ch)
+                ++ count;
             else
             {
-                std::stringstream ss;
-                ss<<times;
-                tmpstr += ss.str();
-                tmpstr.push_back(curChar);
+                tmp += std::to_string(count);
+                tmp += ch;
 
-                curChar = prev[k];
-                times = 1;
+                ch = res[j];
+                count = 1;
             }
         }
 
-        prev = tmpstr;
+        tmp += std::to_string(count);
+        tmp += ch;
+        res = tmp;
     }
 
-    return prev;
+    return res;
 }
 
 int main()
 {
-    std::string res = countAndSay(5);
+    std::string res = countAndSay(4);
     std::cout<<res<<std::endl;
 
     system("pause");
