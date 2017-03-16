@@ -12,66 +12,42 @@ struct ListNode
     ListNode(int x):val(x), next(NULL) {}
 };
 
+int calculateTimeDifference(std::string& time1, std::string& time2)
+{
+    std::cout<<time1<<" "<<time2<<std::endl;
+
+    int h1 = std::stoi(time1.substr(0, 2));
+    int m1 = std::stoi(time1.substr(3));
+
+    int h2 = std::stoi(time2.substr(0,2));
+    int m2 = std::stoi(time2.substr(3));
+
+    return (h2 - h1) * 60 + (m2 - m1);
+}
+
+int findMinDifference(std::vector<std::string>& timePoints)
+{
+    std::sort(timePoints.begin(), timePoints.end());
+    std::string t;
+    t = std::to_string(std::stoi(timePoints[0].substr(0,2)) + 24) + timePoints[0].substr(2);
+    timePoints.push_back(t);
+    //std::cout<<"hello"<<std::endl;
+
+    int minDiff = INT_MAX, curDiff;
+    for(int i = 0; i < timePoints.size() - 1; ++ i)
+    {
+        curDiff = calculateTimeDifference(timePoints[i], timePoints[i+1]);
+        if(curDiff < minDiff)
+            minDiff = curDiff;
+    }
+
+    return minDiff;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
+    std::vector<std::string> timePoints{"00:00", "23:59"};
+    std::cout<<findMinDifference(timePoints)<<std::endl;
     system("pause");
     return 0;
 }
