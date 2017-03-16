@@ -12,65 +12,43 @@ struct ListNode
     ListNode(int x):val(x), next(NULL) {}
 };
 
+void reverseWords(std::string& s)
+{
+    if(s.empty())
+        return;
+
+    std::string res;
+    int i = s.size() - 1;
+
+    while(i >= 0)
+    {
+        while(i >= 0 && s[i] == ' ')
+            -- i;
+
+        if(i < 0)
+            break;
+
+        if(!res.empty())
+            res.push_back(' ');
+
+        std::string t;
+        while(i >= 0 && s[i] != ' ')
+        {
+            t.push_back(s[i]);
+            -- i;
+        }
+        std::reverse(t.begin(), t.end());
+        res.append(t);
+    }
+
+    s = res;
+}
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::string s = "The sky is blue";
+    reverseWords(s);
+    std::cout<<s<<std::endl;
 
     system("pause");
     return 0;
