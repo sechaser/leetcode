@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <stack>
 
 struct ListNode
 {
@@ -13,64 +14,55 @@ struct ListNode
 };
 
 
+int calculate(std::string s)
+{
+    char sign = '+';
+    std::stack<int> stk;
+    int num = 0;
+
+    for(int i = 0; i < s.size(); ++ i)
+    {
+        if(isdigit(s[i]))
+            num = 10 * num + (s[i] - '0');
+
+        if((!isdigit(s[i]) && s[i] != ' ') || i == s.size() -1)
+        {
+            if(sign == '+')
+                stk.push(num);
+            else if(sign == '-')
+                stk.push(-num);
+            else
+            {
+                int tmp = 0;
+                if(sign == '*')
+                    tmp = stk.top() * num;
+                else
+                    tmp = stk.top() / num;
+                stk.pop();
+                stk.push(tmp);
+            }
+
+            sign = s[i];
+            num = 0;
+        }
+    }
+
+    int res = 0;
+
+    while(!stk.empty())
+    {
+        res += stk.top();
+        stk.pop();
+    }
+
+    return res;
+}
+
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::string s = "3+2*2";
+    //calculate(s);
+    std::cout<<calculate(s)<<std::endl;
 
     system("pause");
     return 0;
