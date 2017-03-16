@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <unordered_map>
 
 struct ListNode
 {
@@ -12,65 +13,26 @@ struct ListNode
     ListNode(int x):val(x), next(NULL) {}
 };
 
+bool canConstruct(std::string ransomNote, std::string magazine)
+{
+    std::unordered_map<char, int> mp;
+
+    for(auto &ch : magazine)
+        ++ mp[ch];
+
+    for(auto &ch : ransomNote)
+    {
+        if(-- mp[ch] < 0)
+            return false;
+    }
+    return true;
+}
+
 
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::string ransomNote = "aaa", magazine = "aaba";
+    std::cout<<canConstruct(ransomNote, magazine)<<std::endl;
 
     system("pause");
     return 0;
