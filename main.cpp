@@ -13,64 +13,30 @@ struct ListNode
 };
 
 
+bool repeatedSubstringPattern(std::string s)
+{
+    int sz = s.size();
+    for(int i = sz/2; i > 0; -- i)
+    {
+        if(sz % i == 0)
+        {
+            int num = sz / i;
+            std::string t;
+            for(int j = 0; j < num; ++ j)
+                t += s.substr(0, i);
+
+            if(t == s)
+                return true;
+        }
+    }
+
+    return false;
+}
+
 int main()
 {
-    ListNode* node, *p, *lis1, *lis2, *lis3;
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis1 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i+5;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis2 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
-    for(int i = 0; i != 5; ++ i)
-    {
-        node = (ListNode*)malloc(sizeof(ListNode));
-        node->val  = i;
-        node->next = NULL;
-
-        if(i == 0)
-        {
-            lis3 = node;
-            p    = node;
-        }
-        else
-        {
-            p->next = node;
-            p       = node;
-        }
-    }
-
+    std::string s = "aba";
+    std::cout<<repeatedSubstringPattern(s)<<std::endl;
 
     system("pause");
     return 0;
