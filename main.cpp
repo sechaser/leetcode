@@ -18,49 +18,68 @@ struct TreeNode
 
 
 //***********************************************Method 1********************************************
-//int maxDepth(TreeNode* root)
-//{
-//    if(root == NULL)
-//        return 0;
+void solver(TreeNode* root, int& maxDep, int curDep)
+{
+    ++ curDep;
+    if(!root->left && !root->right)
+    {
+        maxDep = std::max(maxDep, curDep);
+        return;
+    }
 
-//    return std::max(maxDepth(root->left), maxDepth(root->right)) + 1;
-//}
+    if(root->left)
+        solver(root->left, maxDep, curDep);
 
+    if(root->right)
+        solver(root->right, maxDep, curDep);
+}
 
-
-//***********************************************Method 2**********************************************
-int maxDepth(TreeNode *root)
+int maxDepth(TreeNode* root)
 {
     if(root == NULL)
         return 0;
 
-    int res = 0;
-    std::queue<TreeNode*> qnode;
-    qnode.push(root);
-    qnode.push(NULL);
+    int maxDep = INT_MIN, curDep = 0;
+    solver(root, maxDep, curDep);
 
-    while(!qnode.empty())
-    {
-        TreeNode* tmp = qnode.front();
-        qnode.pop();
-
-        if(tmp != NULL)
-        {
-            if(tmp->left)
-                qnode.push(tmp->left);
-            if(tmp->right)
-                qnode.push(tmp->right);
-        }
-        else
-        {
-            ++ res;
-            if(!qnode.empty())
-                qnode.push(NULL);
-        }
-    }
-
-    return res;
+    return maxDep;
 }
+
+
+
+//***********************************************Method 2**********************************************
+//int maxDepth(TreeNode *root)
+//{
+//    if(root == NULL)
+//        return 0;
+
+//    int res = 0;
+//    std::queue<TreeNode*> qnode;
+//    qnode.push(root);
+//    qnode.push(NULL);
+
+//    while(!qnode.empty())
+//    {
+//        TreeNode* tmp = qnode.front();
+//        qnode.pop();
+
+//        if(tmp != NULL)
+//        {
+//            if(tmp->left)
+//                qnode.push(tmp->left);
+//            if(tmp->right)
+//                qnode.push(tmp->right);
+//        }
+//        else
+//        {
+//            ++ res;
+//            if(!qnode.empty())
+//                qnode.push(NULL);
+//        }
+//    }
+
+//    return res;
+//}
 
 
 int main()
