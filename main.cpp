@@ -15,21 +15,16 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
 {
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
-
-std::vector<int> inorderTraversal(TreeNode* root)
-{
-    std::vector<int> res;
-    solver(res, root);
-    return res;
+    if(!root)
+        return NULL;
+    if(root->val > std::max(p->val, q->val))
+        return lowestCommonAncestor(root->left, p, q);
+    else if(root->val < std::min(p->val, q->val))
+        return lowestCommonAncestor(root->right, p, q);
+    else
+        return root;
 }
 
 int main()
@@ -55,11 +50,8 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
+    root = lowestCommonAncestor(root, root->right, root->right->left);
 
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
 
     system("pause");
     return 0;
