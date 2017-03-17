@@ -15,21 +15,29 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+int countNodes(TreeNode* root)
 {
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
+    if(root == NULL)
+        return 0;
 
-std::vector<int> inorderTraversal(TreeNode* root)
-{
-    std::vector<int> res;
-    solver(res, root);
-    return res;
+    int hl = 0, hr = 0;
+    TreeNode* left = root, *right = root;
+    while(left)
+    {
+        ++ hl;
+        left = left->left;
+    }
+
+    while(right)
+    {
+        ++ hr;
+        right = right->right;
+    }
+
+    if(hl == hr)
+        return std::pow(2, hl) - 1;
+
+    return 1 + countNodes(root->left) + countNodes(root->right);
 }
 
 int main()
