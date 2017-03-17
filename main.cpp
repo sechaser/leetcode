@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <queue>
 
 struct TreeNode
 {
@@ -15,20 +16,41 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
-{
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
-
-std::vector<int> inorderTraversal(TreeNode* root)
+std::vector<int> rightSideView(TreeNode* root)
 {
     std::vector<int> res;
-    solver(res, root);
+    if(root == NULL)
+        return res;
+
+    std::queue<TreeNode*> q;
+    q.push(root);
+    q.push(NULL);
+
+    std::vector<int> level;
+    while(!q.empty())
+    {
+        TreeNode* p = q.front();
+        q.pop();
+
+        if(p)
+        {
+            if(p->left)
+                q.push(p->left);
+            if(p->right)
+                q.push(p->right);
+            level.push_back(p->val);
+        }
+        else
+        {
+            res.push_back(level[level.size()-1]);
+            if(!q.empty())
+            {
+                level.clear();
+                q.push(NULL);
+            }
+        }
+    }
+
     return res;
 }
 
@@ -55,7 +77,7 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
+    std::vector<int> res = rightSideView(root);
 
     for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
         std::cout<<std::setw(4)<<res[i];
