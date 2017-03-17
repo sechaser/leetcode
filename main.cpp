@@ -15,22 +15,46 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+void findPath(TreeNode* root, std::vector<int>& path, std::vector<std::vector<int> >& paths)
 {
-    if(root != NULL)
+    path.push_back(root->val);
+
+    if(!root->left && !root->right)
     {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
+        paths.push_back(path);
+        path.pop_back();
+        return;
     }
+
+    if(root->left)
+        findPath(root->left, path, paths);
+
+    if(root->right)
+        findPath(root->right, path, paths);
+    path.pop_back();
 }
 
-std::vector<int> inorderTraversal(TreeNode* root)
+std::vector<std::string> binaryTreePaths(TreeNode* root)
 {
-    std::vector<int> res;
-    solver(res, root);
+    std::vector<std::vector<int> > paths;
+    std::vector<int> path;
+    std::vector<std::string> res;
+
+    if(!root)
+        return res;
+
+    findPath(root, path, paths);
+    for(int i = 0; i < paths.size(); ++ i)
+    {
+        std::string s = std::to_string(paths[i][0]);
+        for(int j = 1; j < paths[i].size(); ++ j)
+            s = s + "->" + std::to_string(paths[i][j]);
+        res.push_back(s);
+    }
+
     return res;
 }
+
 
 int main()
 {
@@ -55,11 +79,10 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
 
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    std::vector<std::string> res = binaryTreePaths(root);
+    for(int i = 0; i < res.size(); ++ i)
+        std::cout<<res[i]<<std::endl;
 
     system("pause");
     return 0;
