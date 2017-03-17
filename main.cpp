@@ -15,21 +15,19 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+TreeNode* invertTree(TreeNode* root)
 {
-    if(root != NULL)
-    {
-        solver(res, root->left);
-        res.push_back(root->val);
-        solver(res, root->right);
-    }
-}
+    if(!root)
+        return NULL;
 
-std::vector<int> inorderTraversal(TreeNode* root)
-{
-    std::vector<int> res;
-    solver(res, root);
-    return res;
+    TreeNode* temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+
+    invertTree(root->left);
+    invertTree(root->right);
+
+    return root;
 }
 
 int main()
@@ -55,11 +53,7 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    root = invertTree(root);
 
     system("pause");
     return 0;
