@@ -15,22 +15,28 @@ struct TreeNode
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-void solver(std::vector<int>& res, TreeNode* root)
+
+void inOrder(TreeNode* root, std::vector<int>& res)
 {
-    if(root != NULL)
+    if(root)
     {
-        solver(res, root->left);
+        inOrder(root->left, res);
         res.push_back(root->val);
-        solver(res, root->right);
+        inOrder(root->right, res);
     }
 }
 
-std::vector<int> inorderTraversal(TreeNode* root)
-{
+int kthSmallest(TreeNode* root, int k) {
+    if(root == NULL)
+        return 0;
+
     std::vector<int> res;
-    solver(res, root);
-    return res;
+    inOrder(root, res);
+
+    return res[k-1];
 }
+
+
 
 int main()
 {
@@ -55,11 +61,7 @@ int main()
 
     root->right->left = node;
 
-    std::vector<int> res = inorderTraversal(root);
-
-    for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
-        std::cout<<std::setw(4)<<res[i];
-    std::cout<<std::endl;
+    std::cout<<kthSmallest(root, 1)<<std::endl;
 
     system("pause");
     return 0;
