@@ -5,54 +5,47 @@
 #include <algorithm>
 #include <iomanip>
 
+
+
 std::vector<int> searchRange(std::vector<int>& nums, int target)
 {
+    std::vector<int> res;
     if(nums.empty())
-        return std::vector<int>{-1,-1};
-    else
     {
-        size_t sz = nums.size();
-        size_t l = 0, r = sz - 1;
-        size_t m = l + (r - l)/2;
-        std::vector<int> res;
+        res.push_back(-1);
+        res.push_back(-1);
+        return res;
+    }
 
-        while(l <= r)
+    int l = 0, r = nums.size() - 1;
+    int m;
+    while(l <= r)
+    {
+        m = (l + r) / 2;
+        if(nums[m] == target)
         {
-            if(nums[m] < target)
-            {
-                l = m + 1;
-                m = l + (r - l)/2;
-            }
-            else if(nums[m] > target)
-            {
-                if(m == 0)
-                    return std::vector<int>{-1,-1};
-                r = m - 1;
-                m = l + (r - l)/2;
-            }
-            else
-            {
-                int i = m;
-                while(i != sz && nums[i] == target)
-                    ++ i;
-                res.push_back(i-1);
+            int i = m - 1;
+            while(i >= 0 && nums[i] == target)
+                -- i;
+            res.push_back(i+1);
 
-                i = m;
-                while(i >= 0 && nums[i] == target)
-                    -- i;
-                res.push_back(i+1);
+            int j = m  + 1;
+            while(j < nums.size() && nums[j] == target)
+                ++ j;
+            res.push_back(j-1);
 
-                break;
-            }
+            return res;
         }
-
-        if(res.size() > 1)
-            std::sort(res.begin(), res.end());
-        else if(res.size() == 1)
-            res.push_back(res[0]);
+        else if(nums[m] < target)
+            l = m + 1;
         else
-            res = std::vector<int>{-1,-1};
+            r = m - 1;
+    }
 
+    if(res.empty())
+    {
+        res.push_back(-1);
+        res.push_back(-1);
         return res;
     }
 }
@@ -60,8 +53,8 @@ std::vector<int> searchRange(std::vector<int>& nums, int target)
 
 int main()
 {
-    std::vector<int> nums{1,3,5};
-    int target = 3;
+    std::vector<int> nums{5, 7, 7, 8, 8, 10};
+    int target = 8;
 
     std::vector<int> res = searchRange(nums, target);
     for(std::vector<int>::size_type i = 0; i != res.size(); ++ i)
