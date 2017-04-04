@@ -31,6 +31,16 @@ int threeSumClosest(std::vector<int>& nums, int target)
                 ++ l;
             else
                 -- r;
+
+//            if(curDiff == 0)
+//                return target;
+
+//            if(std::abs(curDiff) < std::abs(minDiff))
+//                minDiff = curDiff;
+//            else if(curDiff > 0)
+//                ++ l;
+//            else
+//                -- r;
         }
     }
 
