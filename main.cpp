@@ -6,21 +6,6 @@
 #include <iomanip>
 
 
-//int search(std::vector<int>& nums, int target)
-//{
-//    if(nums.empty())
-//        return -1;
-//    else
-//    {
-//        for(std::vector<int>::size_type i = 0; i != nums.size(); ++ i)
-//        {
-//            if(nums[i] == target)
-//                return i;
-//        }
-//        return -1;
-//    }
-//}
-
 int search(std::vector<int>& nums, int target)
 {
     if(nums.empty())
