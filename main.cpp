@@ -12,23 +12,14 @@ int minPathSum(std::vector<std::vector<int> >& grid)
 
     int m = grid.size(), n = grid[0].size();
     std::vector<int> dp(n, 0);
-    for(int i = 0; i != n; ++ i)
-    {
-        if(i == 0)
-            dp[i] = grid[0][i];
-        else
-            dp[i] = dp[i-1] + grid[0][i];
-    }
 
-    for(int i = 1; i != m; ++ i)
+    for(int i = 0; i < n; ++ i)
+        dp[i] = (i > 0)? dp[i-1]+grid[0][i] : grid[0][i];
+
+    for(int i = 1; i < m; ++ i)
     {
-        for(int j = 0; j != n; ++ j)
-        {
-            if(j > 0)
-                dp[j] = std::min(grid[i][j] + dp[j-1], grid[i][j] + dp[j]);
-            else
-                dp[j] = dp[j] + grid[i][j];
-        }
+        for(int j = 0; j < n; ++ j)
+            dp[j] = (j > 0) ? std::min(dp[j-1] + grid[i][j], dp[j] + grid[i][j]) : dp[j] + grid[i][j];
     }
 
     return dp[n-1];
