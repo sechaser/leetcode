@@ -7,7 +7,7 @@
 
 bool wordBreak(std::string s, std::vector<std::string>& wordDict)
 {
-    std::vector<bool> dp(s.size(), 0);
+    std::vector<bool> dp(s.size()+1, 0);
     dp[0] = 1;
 
     for(std::string::size_type i = 0; i != s.size(); ++ i)
