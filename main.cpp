@@ -5,18 +5,14 @@
 #include <algorithm>
 #include <iomanip>
 
-int numDecodings(std::string s)
-{
-    int sz = s.size();
-    if(sz == 0)
+
+int numDecodings(std::string s) {
+    if(s.empty() || s[0] == '0')
         return 0;
 
-    std::vector<int> dp(s.size() + 1, 0);
-    dp[0] = 1;
-    if(s[0] != '0')
-        dp[1] = 1;
-    else
-        dp[1] = 0;
+    int sz = s.size();
+    std::vector<int> dp(sz+1, 0);
+    dp[0] = dp[1] = 1;
 
     for(int i = 2; i <= sz; ++ i)
     {
@@ -25,7 +21,7 @@ int numDecodings(std::string s)
         else
             dp[i] = 0;
 
-        if(s[i-2] == '1' || (s[i-2] == '2' && (s[i-1] <= '6')))
+        if((s[i-2] == '1') || (s[i-2] == '2' && s[i-1] <= '6'))
             dp[i] += dp[i-2];
     }
 
@@ -34,7 +30,7 @@ int numDecodings(std::string s)
 
 int main()
 {
-    std::string s = "17";
+    std::string s = "10";
     std::cout<<numDecodings(s)<<std::endl;
 
     system("pause");
