@@ -6,45 +6,57 @@
 #include <iomanip>
 
 //二分法
+//int mySqrt(int x)
+//{
+//    if(x <= 0)
+//        return 0;
+//    int l = 0, r = x/2 + 1;
+//    long long m;
+
+//    while(l <= r)
+//    {
+//        m = (l + r) / 2;
+
+//        if(m * m  == x)
+//            return m;
+//        else if(m * m < x)
+//            l = m + 1;
+//        else
+//            r = m - 1;
+//    }
+
+//    return r;
+//}
+
+////牛顿法
+//int mySqrt(int x)
+//{
+//    if(x == 0)
+//        return 0;
+
+//    double x1 = 0;
+//    double x2 = x/2.0 + 1;
+
+//    while(x1 != x2)
+//    {
+//        x1 = x2;
+//        x2 = (x1 + x/x1) / 2.0;
+//    }
+
+//    return (int)x2;
+//}
+
+
 int mySqrt(int x)
 {
-    if(x <= 0)
-        return 0;
-    int l = 0, r = x/2 + 1;
-    long long m;
-
-    while(l <= r)
-    {
-        m = (l + r) / 2;
-
-        if(m * m  == x)
-            return m;
-        else if(m * m < x)
-            l = m + 1;
-        else
-            r = m - 1;
+    double ans    = x;
+    double delta  = 0.0001;
+    while (std::abs(std::pow(ans, 2) - x) > delta) {
+        ans = (ans + x / ans) / 2;
     }
-
-    return r;
+    return ans;
 }
 
-//牛顿法
-int mySqrt(int x)
-{
-    if(x == 0)
-        return 0;
-
-    double x1 = 0;
-    double x2 = x/2.0 + 1;
-
-    while(x1 != x2)
-    {
-        x1 = x2;
-        x2 = (x1 + x/x1) / 2.0;
-    }
-
-    return (int)x2;
-}
 
 int main()
 {
