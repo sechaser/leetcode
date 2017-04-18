@@ -5,49 +5,6 @@
 #include <algorithm>
 #include <iomanip>
 
-//Time limit exceed
-//int divide(int dividend, int divisor)
-//{
-//    if(divisor == 0 || dividend == 0)
-//        return 0;
-//    else if(dividend == INT_MIN && divisor == (-1))
-//        return INT_MAX;
-//    else
-//    {
-//        int res = 0;
-//        bool flag = 0;
-//        bool both = 0;
-
-//        if(dividend < 0 && divisor > 0)
-//        {
-//            dividend = (-dividend);
-//            flag     = 1;
-//        }
-//        else if(dividend > 0 && divisor < 0)
-//        {
-//            divisor = (-divisor);
-//            flag    = 1;
-//        }
-//        else if(dividend < 0 && divisor < 0)
-//        {
-//            both = 1;
-//            dividend = (-dividend);
-//            divisor  = (-divisor);
-//        }
-
-//        while(dividend >= divisor)
-//        {
-//            dividend = dividend - divisor;
-//            ++ res;
-//        }
-
-//        if(flag)
-//            return -res;
-//        else
-//            return res;
-//    }
-//}
-
 
 //int divide(int diviend, int divisor)
 //{
