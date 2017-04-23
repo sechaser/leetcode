@@ -6,31 +6,6 @@
 #include <iomanip>
 
 
-//int divide(int diviend, int divisor)
-//{
-//    unsigned int divd = diviend, divs = divisor;
-//    if(diviend < 0)
-//        divd = (-divd);
-//    if(divisor < 0)
-//        divs = (-divs);
-
-//    unsigned int res = 0;
-//    while(divd >= divs)
-//    {
-//        long long a = divs;
-//        int i;
-
-//        for(i = 1; a <= divd; ++ i)
-//            a = (a << 1);
-
-//        res  = res + (1 << (i - 2));
-//        divd = divd - (divs << (i - 2));
-//    }
-
-//    return (diviend > 0 ^ divisor > 0) ? (-res):(res >= INT_MAX ? INT_MAX : res);
-//}
-
-
 int divide(int diviend, int divisor)
 {
     if(divisor == 0)
