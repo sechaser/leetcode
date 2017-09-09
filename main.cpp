@@ -22,6 +22,26 @@ int strStr(std::string haystack, std::string needle)
         return -1;
 
     int m = haystack.size(), n = needle.size();
+    if(m < n)
+        return -1;
+
+    for(int i = 0; i <= m-n; ++ i)
+    {
+        if(haystack.substr(i, n) == needle)
+            return i;
+    }
+
+    return -1;
+}
+
+int strStr(std::string haystack, std::string needle)
+{
+    if(needle.size() == 0)
+        return 0;
+    if(haystack.size() == 0)
+        return -1;
+
+    int m = haystack.size(), n = needle.size();
     for(int i = 0; i <= (m-n); ++ i)
     {
         bool flag = 1;
