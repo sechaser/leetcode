@@ -18,14 +18,14 @@ int divide(int diviend, int divisor)
     if((diviend < 0 && divisor > 0) || (diviend > 0 && divisor < 0))
         flag = 1;
 
-    unsigned long long divid = std::abs((long long)diviend);
-    unsigned long long divis = std::abs((long long)divisor);
+    long long divid = std::abs((long long)diviend);
+    long long divis = std::abs((long long)divisor);
 
     int res = 0;
 
     while(divid >= divis)
     {
-        unsigned long long a = divis;
+        long long a = divis;
 
         int i;
         for(i = 0; a <= divid; ++ i)
